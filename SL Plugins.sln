@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendlyFireDetector", "Fri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCommands", "Shenanigans\CustomCommands.csproj", "{EF186922-5DE2-41CB-9E0A-EBD53EB3561E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedGameplay", "EnhancedGameplay\EnhancedGameplay.csproj", "{35B64238-8541-45C1-8383-5110F9AACCE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{EF186922-5DE2-41CB-9E0A-EBD53EB3561E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF186922-5DE2-41CB-9E0A-EBD53EB3561E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF186922-5DE2-41CB-9E0A-EBD53EB3561E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B64238-8541-45C1-8383-5110F9AACCE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B64238-8541-45C1-8383-5110F9AACCE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B64238-8541-45C1-8383-5110F9AACCE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B64238-8541-45C1-8383-5110F9AACCE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
