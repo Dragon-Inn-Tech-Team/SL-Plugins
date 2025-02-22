@@ -19,6 +19,8 @@ namespace Choas
 
         public override void Enable()
         {
+            CustomHandlersManager.RegisterEventsHandler(Events);
+        
             if (ServerSpecificSettingsSync.DefinedSettings == null)
                 ServerSpecificSettingsSync.DefinedSettings = [];
 
