@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Choas.SSSettings;
+using LabApi.Events.CustomHandlers;
 using RedRightHand.CustomPlugin;
 using UserSettings.ServerSpecific;
 
@@ -19,13 +20,15 @@ namespace Choas
 
         public override void Enable()
         {
+            CustomHandlersManager.RegisterEventsHandler(Events);
+
             if (ServerSpecificSettingsSync.DefinedSettings == null)
                 ServerSpecificSettingsSync.DefinedSettings = [];
 
             ServerSpecificSettingsSync.DefinedSettings = ServerSpecificSettingsSync.DefinedSettings.Concat(CustomSettingsManager.GetAllSettings()).ToArray();
             ServerSpecificSettingsSync.SendToAll();
         }
-
+        
         public override void Disable() { }
     }
 }
