@@ -5,8 +5,7 @@ using InventorySystem.Items.Pickups;
 using MapGeneration;
 using PlayerRoles.Spectating;
 using PlayerStatsSystem;
-using PluginAPI.Core;
-using PluginAPI.Core.Items;
+using LabApi.Features.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,7 +88,7 @@ namespace Choas.SSSettings
                                 }
                                 if (UnityEngine.Random.Range(0f, 1f) > .75f)
                                 {
-                                    RoomIdUtils.RoomAtPosition(trgt.PlayerCameraReference.position).ApiRoom.Lights.FlickerLights(.1f);
+                                    Room.GetRoomAtPosition(trgt.PlayerCameraReference.position).LightController.FlickerLights(.1f);
                                     hub.gameConsoleTransmission.SendToClient("Lights flickered!", "green");
                                 }
                                 else

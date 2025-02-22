@@ -4,26 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Choas.SSSettings;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Events;
+using RedRightHand.CustomPlugin;
 using UserSettings.ServerSpecific;
 
 namespace Choas
 {
-    public class Plugin
+    public class ChoasPlugin : CustomPluginCore
     {
-        [PluginEntryPoint("Choas", "1.0.0", "brings the choas to SL", "Dragon Inn Tech Team")]
-        public void OnPluginStart()
-        {
-            Logger.Info($"Let the choas begin");
-            EventManager.RegisterEvents<Events>(this);
+        public override string Name => "Choas";
 
+        public override string Description => "brings the choas to SL";
+
+        public override Version Version => new(1, 0, 0);
+
+        public override void Enable()
+        {
             if (ServerSpecificSettingsSync.DefinedSettings == null)
-                ServerSpecificSettingsSync.DefinedSettings = new ServerSpecificSettingBase[0];
+                ServerSpecificSettingsSync.DefinedSettings = [];
 
             ServerSpecificSettingsSync.DefinedSettings = ServerSpecificSettingsSync.DefinedSettings.Concat(CustomSettingsManager.GetAllSettings()).ToArray();
             ServerSpecificSettingsSync.SendToAll();
         }
+
+        public override void Disable() { }
     }
 }
