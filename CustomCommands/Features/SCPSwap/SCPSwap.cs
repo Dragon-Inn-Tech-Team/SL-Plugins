@@ -41,22 +41,31 @@ namespace CustomCommands.Features.SCPSwap
 		static List<KeyValuePair<string, uint>> raffleParticipants = new List<KeyValuePair<string, uint>>();
 		static Dictionary<string, string> swapRequests = new Dictionary<string, string>();
 		static Dictionary<string, SwapType> swapDict = new Dictionary<string, SwapType>();
+		private static List<RoleTypeId> scpRoles = new List<RoleTypeId>() { RoleTypeId.Scp049, RoleTypeId.Scp079, RoleTypeId.Scp106, RoleTypeId.Scp173, RoleTypeId.Scp939, RoleTypeId.Scp096 };
 		
 
 		public static RoleTypeId[] AvailableSCPs
 		{
 			get
 			{
-				var Roles = new List<RoleTypeId>() { RoleTypeId.Scp049, RoleTypeId.Scp079, RoleTypeId.Scp106, RoleTypeId.Scp173, RoleTypeId.Scp939, RoleTypeId.Scp096 };
-				var scpRoles = Player.List.Where(r => r.ReferenceHub.IsSCP()).Select(r => r.Role);
+				var tempRoles = scpRoles;
+				var CurrentSCPRoles = Player.List.Where(r => r.ReferenceHub.IsSCP()).Select(r => r.Role);
 
-				foreach (var r in scpRoles)
+				foreach (var r in CurrentSCPRoles)
 				{
-					if (Roles.Contains(r))
-						Roles.Remove(r);
-				}
+                    tempRoles.Remove(r);
 
-				return Roles.ToArray();
+					if (r == RoleTypeId.Scp079 || r == RoleTypeId.Scp096) // 079/096 exclusivity
+					{
+						tempRoles.Remove(RoleTypeId.Scp079);
+						tempRoles.Remove(RoleTypeId.Scp096);
+					}
+				}
+				
+				if (tempRoles.Any()) // Incase this is used on a really big server
+					return tempRoles.ToArray();
+				else
+					return scpRoles.ToArray();
 			}
 		}
 
