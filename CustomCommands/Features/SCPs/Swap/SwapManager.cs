@@ -16,11 +16,12 @@ namespace CustomCommands.Features.SCPs.Swap
 		public static int SwapToScpSeconds => (int)(_swapSeconds * 1.5f);
 
 		public static int SCPsToReplace = 0;
-		public static int ReplaceBaseCooldownRounds = 4;
+		public static int ReplaceBaseCooldownRounds = 3;
 		public static Dictionary<string, int> triggers = new Dictionary<string, int>();
 		public static Dictionary<string, int> scpCooldown = new Dictionary<string, int>();
 		public static Dictionary<string, int> humanCooldown = new Dictionary<string, int>();
-		public static List<KeyValuePair<string, uint>> RaffleParticipants = new List<KeyValuePair<string, uint>>();
+		public static Dictionary<ReferenceHub, uint> raffleParticipants = new Dictionary<ReferenceHub, uint>();
+		private static List<RoleTypeId> scpRoles = new List<RoleTypeId>() { RoleTypeId.Scp049, RoleTypeId.Scp079, RoleTypeId.Scp106, RoleTypeId.Scp173, RoleTypeId.Scp939, RoleTypeId.Scp096 };
 
 		public static void ReplaceBroadcast()
 		{
@@ -32,20 +33,26 @@ namespace CustomCommands.Features.SCPs.Swap
 		{
 			get
 			{
-				var Roles = new List<RoleTypeId>() { RoleTypeId.Scp049, /*RoleTypeId.Scp079, */RoleTypeId.Scp106, RoleTypeId.Scp173, RoleTypeId.Scp939, RoleTypeId.Scp096 };
-
-				var scpRoles = Player.GetPlayers().Where(r => r.ReferenceHub.IsSCP()).Select(r => r.Role);
-				//if (scpRoles.Any())
-				foreach (var r in scpRoles)
+                var tempRoles = scpRoles;
+                var currentScpRoles = Player.GetPlayers().Where(r => r.ReferenceHub.IsSCP()).Select(r => r.Role);
+				
+				foreach (var r in currentScpRoles)
 				{
-					if (Roles.Contains(r))
-						Roles.Remove(r);
-				}
-				//else
-				//    Roles.Remove(RoleTypeId.Scp079);
+					if (tempRoles.Contains(r))
+                        tempRoles.Remove(r);
 
-				return Roles.ToArray();
-			}
+                    if (r == RoleTypeId.Scp079 || r == RoleTypeId.Scp096) // 079/096 exclusivity
+                    {
+                        tempRoles.Remove(RoleTypeId.Scp079);
+                        tempRoles.Remove(RoleTypeId.Scp096);
+                    }
+                }
+
+                if (tempRoles.Any()) // Incase this is used on a really big server
+                    return tempRoles.ToArray();
+                else
+                    return scpRoles.ToArray();
+            }
 		}
 
 		public static bool CanScpSwapToHuman(ReferenceHub plr, out string reason) => CanScpSwapToHuman(Player.Get(plr), out reason);
@@ -143,50 +150,57 @@ namespace CustomCommands.Features.SCPs.Swap
 		public static void QueueSwapHumanToScp(ReferenceHub plr) => QueueSwapHumanToScp(Player.Get(plr));
 		public static void QueueSwapHumanToScp(Player plr)
 		{
-			bool first = RaffleParticipants.Count == 0;
+            bool first = raffleParticipants.Count == 0;
 
-			ScpTicketsLoader tix = new ScpTicketsLoader();
-			int numTix = tix.GetTickets(plr.ReferenceHub, 10);
-			tix.Dispose();
-			uint rGroup = 1;
-			if (numTix >= 13) rGroup = (uint)numTix;
-			if (plr.Role == RoleTypeId.Spectator) rGroup <<= 8;
+            ScpTicketsLoader tix = new ScpTicketsLoader();
+            int numTix = tix.GetTickets(plr.ReferenceHub, 10);
+            tix.Dispose();
+            uint rGroup = 1;
+            if (numTix >= 13) rGroup = (uint)numTix;
+            if (plr.Role == RoleTypeId.Spectator) rGroup <<= 8;
 
-			RaffleParticipants.Add(new KeyValuePair<string, uint>(plr.UserId, rGroup));
+            if (!raffleParticipants.ContainsKey(plr.ReferenceHub))
+                plr.ReceiveHint("You are now in the SCP raffle", 3);
 
-			if (first)
-			{
-				MEC.Timing.CallDelayed(5f, () =>
-				{
-					string draw = "";
-					yoinkus: //Makes sure the person didn't leave in the 5 second draw time and that all SCP slots are filled
-					if (RaffleParticipants.Count > 0)
-					{
-						List<string> DrawGroup = new List<string>();
-						if (RaffleParticipants.Count >= 6)
-						{
-							RaffleParticipants.Sort((x, y) => -x.Value.CompareTo(y.Value)); //I think this is descending order?
-							DrawGroup = RaffleParticipants.Take(RaffleParticipants.Count / 2).Select(x => x.Key).ToList();
-						}
-						else DrawGroup = RaffleParticipants.Select(x => x.Key).ToList();
+            raffleParticipants.AddToOrReplaceValue(plr.ReferenceHub, rGroup);
 
-						draw = DrawGroup.PullRandomItem();
-					}
-					else
-					{
-						return;
-					}
+            if (first)
+            {
+                MEC.Timing.CallDelayed(5f, () =>
+                {
+                    ReferenceHub draw;
+                yoinkus: //Makes sure the person didn't leave in the 5 second draw time and that all SCP slots are filled
+                    if (raffleParticipants.Count == 0)
+                        return;
 
-					if (Player.TryGet(draw, out var drawPlr))
-						SwapHumanToScp(drawPlr);
-					else goto yoinkus;
+                    List<KeyValuePair<ReferenceHub, uint>> DrawGroup = raffleParticipants.ToList();
+                    if (raffleParticipants.Count >= 6)
+                    {
+                        DrawGroup.Sort((x, y) => x.Value.CompareTo(y.Value));
+                        DrawGroup = DrawGroup.Skip(DrawGroup.Count / 2).ToList();
+                    }
 
-					if (SCPsToReplace == 0)
-						RaffleParticipants.Clear();
-					else goto yoinkus;
-				});
-			}
-		}
+                    draw = DrawGroup.PullRandomItem().Key;
+
+                    var drawPlr = Player.Get(draw);
+                    if (drawPlr != null)
+                        SwapHumanToScp(drawPlr);
+                    else goto yoinkus;
+
+                    if (SCPsToReplace == 0)
+                    {
+                        while (raffleParticipants.Count > 0)
+                        {
+                            var temp = Player.Get(raffleParticipants.First().Key);
+                            if (temp != null)
+                                temp.ReceiveHint("You lost the raffle.", 3);
+                            raffleParticipants.Remove(raffleParticipants.First().Key);
+                        }
+                    }
+                    else goto yoinkus;
+                });
+            }
+        }
 
 		public static void SwapHumanToScp(ReferenceHub plr) => SwapHumanToScp(Player.Get(plr));
 		public static void SwapHumanToScp(Player plr)

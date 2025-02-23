@@ -27,7 +27,7 @@ namespace CustomCommands.Features.SCPs.Swap.Commands
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
-			if (sender is PlayerCommandSender pSender && !pSender.ReferenceHub.IsSCP() && pSender.ReferenceHub.IsAlive())
+			if (sender is PlayerCommandSender pSender && !pSender.ReferenceHub.IsSCP())
 			{
 				var player = Player.Get(pSender.ReferenceHub);
 
@@ -35,14 +35,14 @@ namespace CustomCommands.Features.SCPs.Swap.Commands
 				{
 					SwapManager.QueueSwapHumanToScp(player);
 
-					response = "You have replaced an SCP";
+					response = "You are now in the SCP raffle";
 					return true;
 				}
 
 				return false;
 			}
 
-			response = "You must be a living human role to run this command";
+			response = "You must be a human role or spectator to run this command";
 			return false;
 		}
 	}
