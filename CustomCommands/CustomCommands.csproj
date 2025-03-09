@@ -107,7 +107,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Audio\PlaySound.cs" />
     <Compile Include="Commands\Grenade\Explode.cs" />
     <Compile Include="Commands\Misc\MassRenaming.cs" />
     <Compile Include="Commands\Misc\Mock.cs" />
