@@ -5,6 +5,7 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Events;
 using RedRightHand.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UserSettings.ServerSpecific;
 
@@ -58,7 +59,8 @@ namespace CustomCommands.Features.SCPs.Swap
 		{
 			SwapManager.SCPsToReplace = 0;
 			SwapManager.triggers.Clear();
-		}
+			SwapManager.raffleParticipants.Clear();
+        }
 
 		[PluginEvent]
 		public void PlayerLeave(PlayerLeftEvent args)

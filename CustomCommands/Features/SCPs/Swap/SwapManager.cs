@@ -187,7 +187,7 @@ namespace CustomCommands.Features.SCPs.Swap
                         SwapHumanToScp(drawPlr);
                     else goto yoinkus;
 
-                    if (SCPsToReplace == 0)
+                    if (SCPsToReplace <= 0)
                     {
                         while (raffleParticipants.Count > 0)
                         {
