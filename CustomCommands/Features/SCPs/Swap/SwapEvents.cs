@@ -1,11 +1,11 @@
 ﻿using MEC;
+using PlayerRoles;
 using PlayerStatsSystem;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Events;
 using RedRightHand.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UserSettings.ServerSpecific;
 
@@ -28,7 +28,7 @@ namespace CustomCommands.Features.SCPs.Swap
 				}
 				else
 					args.Player.SendBroadcast("You can swap SCP with another player by running the \".scpswap <SCP>\" command in your console", 5);
-				args.Player.SendBroadcast("You can change back to a human role by running the \".human\" command", 5);
+				args.Player.SendBroadcast("You can change to a human role by running the \".human\" command", 5);
 			}
 		}
 
@@ -41,7 +41,14 @@ namespace CustomCommands.Features.SCPs.Swap
 			{
 				if(SwapManager.SCPsToReplace > 0)
 				{
-					foreach(var scpPlr in Player.GetPlayers().Where(p => p.IsSCP))
+					var currentScps = Player.GetPlayers().Where(p => p.ReferenceHub.IsSCP(false));
+					if (currentScps.Count() == 1 && (currentScps.First().Role == RoleTypeId.Scp079 || currentScps.First().Role == RoleTypeId.Scp096))
+					{
+                        var newRole = SwapManager.scpRoles.ToList().Except(new RoleTypeId[] { RoleTypeId.Scp079, RoleTypeId.Scp096 }).ToList().RandomItem();
+						currentScps.First().SetRole(newRole, RoleChangeReason.LateJoin);
+                    }
+
+                    foreach (var scpPlr in currentScps)
 					{
 						if (scpPlr.Role.IsValidSCP())
 						{
@@ -49,7 +56,10 @@ namespace CustomCommands.Features.SCPs.Swap
 						}
 					}
 
-					Server.SendBroadcast($"Due to {SwapManager.SCPsToReplace} missing SCP(s), All living SCPs have been buffed", 5, Broadcast.BroadcastFlags.Normal, true);
+					if (currentScps.Count() == 0)
+                        Server.SendBroadcast("There are no SCPs this round.", 5, Broadcast.BroadcastFlags.Normal, true);
+                    else
+						Server.SendBroadcast($"Due to {SwapManager.SCPsToReplace} missing SCP(s), All living SCPs have been buffed", 5, Broadcast.BroadcastFlags.Normal, true);
 				}
 			});
 		}
@@ -59,7 +69,7 @@ namespace CustomCommands.Features.SCPs.Swap
 		{
 			SwapManager.SCPsToReplace = 0;
 			SwapManager.triggers.Clear();
-			SwapManager.raffleParticipants.Clear();
+			SwapManager.raffle = null;
         }
 
 		[PluginEvent]
