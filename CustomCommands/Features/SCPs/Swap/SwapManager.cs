@@ -173,7 +173,7 @@ namespace CustomCommands.Features.SCPs.Swap
 				reason = "There are no SCPs to replace";
 				return false;
 			}
-			if (plr.TemporaryData.Contains("startedasscp"))
+			if (plr.TemporaryData.Contains("startedasscp") || plr.IsSCP)
 			{
 				reason = "You were already an SCP this round";
 				return false;
