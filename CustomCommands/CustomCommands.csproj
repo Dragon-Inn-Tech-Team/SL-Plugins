@@ -83,6 +83,7 @@
     <Compile Include="Features\LateJoin\LateJoin.cs" />
     <Compile Include="Features\LateSpawn\LateSpawn.cs" />
     <Compile Include="Features\SurfaceLightingFix\SurfaceLightingFix.cs" />
+    <Compile Include="Features\Voting\Commands\StartVote.cs" />
     <Compile Include="Features\Voting\Votes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Features\EventRounds\Events\DClassBattle\BattleCommand.cs" />
