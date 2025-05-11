@@ -19,7 +19,7 @@ namespace CustomCommands.Commands.Renaming
 
 		public string[] Aliases { get; } = { "renameall" };
 
-		public string Description => "Renames every player based on an input. Run this command with no arugments to see more info.";
+		public string Description => "Renames every player based on an input. Run with no arguments for more info.";
 
 		public string[] Usage { get; } = { "Nickname" };
 
