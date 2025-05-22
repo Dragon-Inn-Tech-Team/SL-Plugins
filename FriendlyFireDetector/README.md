@@ -12,4 +12,4 @@ This plugin has no config
 # Events
 This plugin uses the following events:
  - PlayerSpawn
- - PlayerDamage
+ - PlayerDamage (Highest Priority)

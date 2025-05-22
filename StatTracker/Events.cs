@@ -1,46 +1,83 @@
-﻿using LabApi.Events.Arguments.PlayerEvents;
-using LabApi.Events.Arguments.ServerEvents;
-using LabApi.Events.CustomHandlers;
-using LabApi.Features.Console;
-using LabApi.Features.Wrappers;
-using MEC;
+﻿using MEC;
 using Newtonsoft.Json;
 using PlayerRoles;
 using PlayerStatsSystem;
-using RedRightHand;
+using PluginAPI.Core;
+using PluginAPI.Core.Attributes;
+using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static StatTracker.StatTrackerPlugin;
+using static StatTracker.Plugin;
 
 namespace StatTracker
 {
-	public class Events : CustomEventsHandler
+	public class Events
 	{
 		public static Dictionary<string, Stats> StatData = new Dictionary<string, Stats>();
-		public static Dictionary<string, bool> PlayerCuffed = new Dictionary<string, bool>();
 
-		public override void OnServerWaitingForPlayers()
+		[PluginEvent]
+		public void OnPlayerSpawn(PlayerSpawnEvent ev)
 		{
-			StatData.Clear();
-			PlayerCuffed.Clear();
+			if (ev.Player == null || ev.Player.UserId == null)
+				return;
+
+			if(StatData.ContainsKey(ev.Player.UserId) && ev.Player.Role != RoleTypeId.Spectator)
+			{
+				if (StatData[ev.Player.UserId].Spawns.ContainsKey((int)ev.Player.Role))
+					StatData[ev.Player.UserId].Spawns[(int)ev.Player.Role] += 1;
+				else
+					StatData[ev.Player.UserId].Spawns.Add((int)ev.Player.Role, 1);
+			}
 		}
-		public override void OnServerRoundStarted()
+
+		[PluginEvent]
+		public void OnPlayerJoin(PlayerJoinedEvent ev)
 		{
-			foreach (var plr in Player.List)
+			if (Round.IsRoundStarted && !Round.IsRoundEnded)
+			{
+				if (StatData.ContainsKey(ev.Player.UserId))
+					StatData[ev.Player.UserId].Jointime = DateTime.UtcNow;
+				else
+					StatData.Add(ev.Player.UserId, new Plugin.Stats(ev.Player));
+			}
+		}
+
+		[PluginEvent]
+		public void OnRoundStart(RoundStartEvent ev)
+		{
+			foreach (var plr in Server.GetPlayers())
 			{
 				if (StatData.ContainsKey(plr.UserId))
 					StatData[plr.UserId].Jointime = DateTime.UtcNow;
 				else
-					StatData.Add(plr.UserId, new StatTrackerPlugin.Stats(plr));
+					StatData.Add(plr.UserId, new Plugin.Stats(plr));
 			}
 		}
-		public override void OnServerRoundEnded(RoundEndedEventArgs ev)
+
+		[PluginEvent]
+		public void OnPlayerLeave(PlayerLeftEvent ev)
 		{
-			foreach (var plr in Player.List)
+			try{
+				if (Round.IsRoundStarted && !Round.IsRoundEnded)
+				{
+					if (StatData.ContainsKey(ev.Player.UserId))
+					{
+						StatData[ev.Player.UserId].SecondsPlayed += (int)(DateTime.UtcNow - StatData[ev.Player.UserId].Jointime).TotalSeconds;
+					}
+				}
+			}
+			//To stop it throwing an error if round is null (for like forced round restarts)
+			catch(Exception) { }
+		}
+
+		[PluginEvent]
+		public void OnRoundEnd(RoundEndEvent ev)
+		{
+			foreach (var plr in Server.GetPlayers())
 			{
 				if (StatData.ContainsKey(plr.UserId))
 				{
@@ -54,52 +91,20 @@ namespace StatTracker
 			Timing.RunCoroutine(HandleDataSend(StatData));
 		}
 
-		public override void OnPlayerSpawned(PlayerSpawnedEventArgs ev)
+		[PluginEvent]
+		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			if (ev.Player == null || ev.Player.UserId == null)
+			StatData.Clear();
+		}
+
+		[PluginEvent]
+		public void OnPlayerDamage(PlayerDamageEvent ev)
+		{
+			if (!(ev.DamageHandler is AttackerDamageHandler aDH) || !StatData.ContainsKey(ev.Target.UserId) || !StatData.ContainsKey(aDH.Attacker.Hub.authManager.UserId))
 				return;
 
-			if (StatData.ContainsKey(ev.Player.UserId) && ev.Player.Role != RoleTypeId.Spectator)
-			{
-				if (StatData[ev.Player.UserId].Spawns.ContainsKey((int)ev.Player.Role))
-					StatData[ev.Player.UserId].Spawns[(int)ev.Player.Role] += 1;
-				else
-					StatData[ev.Player.UserId].Spawns.Add((int)ev.Player.Role, 1);
-			}
-		}
-		public override void OnPlayerJoined(PlayerJoinedEventArgs ev)
-		{
-			if (Extensions.RoundInProgress())
-			{
-				if (StatData.ContainsKey(ev.Player.UserId))
-					StatData[ev.Player.UserId].Jointime = DateTime.UtcNow;
-				else
-					StatData.Add(ev.Player.UserId, new StatTrackerPlugin.Stats(ev.Player));
-			}
-		}
-		public override void OnPlayerLeft(PlayerLeftEventArgs ev)
-		{
-			try
-			{
-				if (Extensions.RoundInProgress())
-				{
-					if (StatData.ContainsKey(ev.Player.UserId))
-					{
-						StatData[ev.Player.UserId].SecondsPlayed += (int)(DateTime.UtcNow - StatData[ev.Player.UserId].Jointime).TotalSeconds;
-					}
-				}
-			}
-			//To stop it throwing an error if round is null (for like forced round restarts)
-			catch (Exception) { }
-		}
-
-		public override void OnPlayerHurt(PlayerHurtEventArgs ev)
-		{
-			if (!(ev.DamageHandler is AttackerDamageHandler aDH) || !StatData.ContainsKey(ev.Player.UserId) || !StatData.ContainsKey(aDH.Attacker.Hub.authManager.UserId))
-				return;
-
-			var targ = ev.Player;
-			var atkr = Player.Get(aDH.Attacker.Hub);
+			var targ = ev.Target;
+			var atkr = new Player(aDH.Attacker.Hub);
 
 			if (!aDH.IsFriendlyFire && targ.Role != RoleTypeId.ClassD)
 			{
@@ -107,15 +112,17 @@ namespace StatTracker
 				StatData[atkr.UserId].DamageDealt += (int)aDH.Damage;
 			}
 		}
-		public override void OnPlayerDeath(PlayerDeathEventArgs ev)
+
+		[PluginEvent]
+		public void OnPlayerDeath(PlayerDyingEvent ev)
 		{
 			if (!(ev.DamageHandler is AttackerDamageHandler aDH) || !StatData.ContainsKey(ev.Player.UserId) || !StatData.ContainsKey(aDH.Attacker.Hub.authManager.UserId))
 				return;
 
 			var targ = ev.Player;
-			var atkr = Player.Get(aDH.Attacker.Hub);
+			var atkr = new Player(aDH.Attacker.Hub);
 
-			if (StatData[targ.UserId].Deaths.ContainsKey((int)targ.Role))
+			if(StatData[targ.UserId].Deaths.ContainsKey((int)targ.Role))
 				StatData[targ.UserId].Deaths[(int)targ.Role] += 1;
 			else
 				StatData[targ.UserId].Deaths.Add((int)targ.Role, 1);
@@ -125,23 +132,29 @@ namespace StatTracker
 			else
 				StatData[atkr.UserId].Killed.Add((int)targ.Role, 1);
 		}
-		public override void OnPlayerEscaped(PlayerEscapedEventArgs ev)
+
+		[PluginEvent]
+		public void OnPlayerEscape(PlayerEscapeEvent ev)
 		{
 			if (StatData.ContainsKey(ev.Player.UserId))
 				StatData[ev.Player.UserId].Escaped = true;
 		}
-		public override void OnPlayerCuffed(PlayerCuffedEventArgs ev)
+
+		[PluginEvent]
+		public void OnPlayerCuffed(PlayerHandcuffEvent ev)
 		{
 			if (ev.Player == null || ev.Target == null || !StatData.ContainsKey(ev.Player.UserId) || !StatData.ContainsKey(ev.Target.UserId))
 				return;
 
-			if (!PlayerCuffed.ContainsKey(ev.Target.UserId))
+			if (!ev.Target.TemporaryData.StoredData.ContainsKey("st.handcuffed"))
 			{
 				StatData[ev.Player.UserId].PlayersDisarmed += 1;
-				PlayerCuffed.Add(ev.Target.UserId, true);
+				ev.Target.TemporaryData.StoredData.Add("st.handcuffed", null);
 			}
 		}
-		public override void OnPlayerUsedItem(PlayerUsedItemEventArgs ev)
+
+		[PluginEvent]
+		public void OnPlayerHeal(PlayerUsedItemEvent ev)
 		{
 			if (ev.Item.Category != ItemCategory.Medical || !StatData.ContainsKey(ev.Player.UserId))
 				return;
@@ -158,7 +171,7 @@ namespace StatTracker
 
 			foreach (var a in StatData)
 			{
-				Logger.Info($"Adding {a.Key} | {a.Value.UserID} | {a.Value.DNT}");
+				Log.Info($"Adding {a.Key} | {a.Value.UserID} | {a.Value.DNT}");
 
 				if (!a.Value.DNT)
 				{
@@ -166,10 +179,10 @@ namespace StatTracker
 				}
 			}
 
-			Logger.Info($"Sending stat data for {stats.Count} players");
+			Log.Info($"Sending stat data for {stats.Count} players");
 
 			var json = JsonConvert.SerializeObject(stats.ToArray(), Formatting.Indented);
-			_ = Post(StatTrackerPlugin.config.ApiEndpoint, new StringContent(json, Encoding.UTF8, "application/json"));
+			_ = Post(Plugin.config.ApiEndpoint, new StringContent(json, Encoding.UTF8, "application/json"));
 
 			yield return 0f;
 		}

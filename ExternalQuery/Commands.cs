@@ -1,5 +1,5 @@
 ﻿using CommandSystem;
-using LabApi.Features.Wrappers;
+using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 
@@ -26,7 +26,7 @@ namespace ExternalQuery
 
 			var plrStrs = new List<string>();
 
-			foreach (var plr in Player.List)
+			foreach (var plr in Player.GetPlayers())
 			{
 				if (plr.IsServer)
 					continue;

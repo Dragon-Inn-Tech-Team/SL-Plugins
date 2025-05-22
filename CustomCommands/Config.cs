@@ -1,8 +1,6 @@
-﻿using RedRightHand.CustomPlugin;
-
-namespace CustomCommands
+﻿namespace CustomCommands
 {
-	public class Config : CustomPluginConfig
+	public class Config
 	{
 		//Enables the plock and pdestroy commands
 		public bool EnableDoorLocking { get; set; } = true;
@@ -56,8 +54,5 @@ namespace CustomCommands
 		public int MinBlackoutTime { get; set; } = 180; //Minimum time between round start and blackout
 		public int MaxBlackoutTime { get; set; } = 360; //Maximum time between round start and blackout
 		public int BlackoutDuration { get; set; } = 30; //Duration of the blackout 
-		public bool EnableSCP3114 { get; set; } = true; // Enables SCP 3114 and it's balancing features
-
-		public bool EnableRandomSizes { get; set; } = true;
 	}
 }

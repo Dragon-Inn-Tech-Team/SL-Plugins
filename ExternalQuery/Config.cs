@@ -1,8 +1,6 @@
-﻿using RedRightHand.CustomPlugin;
-
-namespace ExternalQuery
+﻿namespace ExternalQuery
 {
-	public class Config : CustomPluginConfig
+	public class Config
 	{
 		public bool Enabled { get; set; } = false;
 		public int Port { get; set; } = 8290;

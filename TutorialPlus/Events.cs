@@ -1,97 +1,104 @@
-﻿using System;
+﻿using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
+using PluginAPI.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlayerRoles;
+using PluginAPI.Core;
 using PlayerRoles.FirstPersonControl;
-using LabApi.Events.CustomHandlers;
-using LabApi.Events.Arguments.Scp096Events;
-using LabApi.Features.Console;
-using RedRightHand;
-using LabApi.Events.Arguments.Scp173Events;
-using LabApi.Events.Arguments.PlayerEvents;
-using GameCore;
 
 namespace TutorialPlus
 {
-	public class Events : CustomEventsHandler
+	public class Events
 	{
-		public override void OnScp096AddingTarget(Scp096AddingTargetEventArgs ev)
+		[PluginEvent(ServerEventType.Scp096AddingTarget)]
+		public bool New096Target(Scp096AddingTargetEvent args)
 		{
-			if(!TutorialPlusPlugin.Config.TutorialTrigger096 && ev.Target.Role == RoleTypeId.Tutorial)
+			if (!Plugin.Config.TutorialTrigger096 && args.Target.Role == RoleTypeId.Tutorial)
 			{
-				TutorialPlusPlugin.DebugLog($"Plugin blocked player {ev.Target.ToLogString()} from becoming a target of SCP096 {ev.Player.ToLogString()}");
-				ev.IsAllowed = false;
+				if (Plugin.Config.Debug)
+					Log.Debug($"Plugin blocked player {args.Target.Nickname} from becoming target of SCP096 {args.Player.Nickname}");
+				return false;
+			}
+			else return true;
+		}
+
+		[PluginEvent(ServerEventType.Scp173NewObserver)]
+		public bool New173Target(Scp173NewObserverEvent args)
+		{
+			if (!Plugin.Config.TutorialObserve173 && args.Target.Role == RoleTypeId.Tutorial)
+			{
+				if (Plugin.Config.Debug)
+					Log.Debug($"Plugin blocked player {args.Target.Nickname} from becoming observer of SCP173 {args.Player.Nickname}");
+				return false;
+			}
+			else return true;
+		}
+
+		[PluginEvent(ServerEventType.PlayerChangeRole)]
+		public void PlayerChangeRole(PlayerChangeRoleEvent args)
+		{
+			if(args.NewRole == RoleTypeId.Tutorial && args.ChangeReason == RoleChangeReason.RemoteAdmin)
+			{
+				if(Plugin.Config.TutorialBypass)
+				{
+					if (Plugin.Config.Debug)
+						Log.Debug($"Plugin enabled bypass mode for {args.Player.Nickname}");
+					args.Player.ReferenceHub.serverRoles.BypassMode = true;
+				}
+
+				if (Plugin.Config.TutorialGodmode)
+				{
+					if (Plugin.Config.Debug)
+						Log.Debug($"Plugin enabled godmode for {args.Player.Nickname}");
+					args.Player.ReferenceHub.characterClassManager.GodMode = true;
+				}
+
+				if (Plugin.Config.TutorialNoclip)
+				{
+					if (Plugin.Config.Debug)
+						Log.Debug($"Plugin enabled noclip for {args.Player.Nickname}");
+					FpcNoclip.PermitPlayer(args.Player.ReferenceHub);
+				}
+			}
+			else if(args.OldRole.RoleTypeId == RoleTypeId.Tutorial)
+			{
+				if (Plugin.Config.TutorialBypass)
+				{
+					if (Plugin.Config.Debug)
+						Log.Debug($"Plugin disabled bypass mode for {args.Player.Nickname}");
+					args.Player.ReferenceHub.serverRoles.BypassMode = false;
+				}
+
+				if (Plugin.Config.TutorialGodmode)
+				{
+					if (Plugin.Config.Debug)
+						Log.Debug($"Plugin disabled godmode for {args.Player.Nickname}");
+					args.Player.ReferenceHub.characterClassManager.GodMode = false;
+				}
+
+				if (Plugin.Config.TutorialNoclip)
+				{
+					if (Plugin.Config.Debug)
+						Log.Debug($"Plugin disabled noclip for {args.Player.Nickname}");
+					FpcNoclip.UnpermitPlayer(args.Player.ReferenceHub);
+				}
 			}
 		}
 
-		public override void OnScp173AddingObserver(Scp173AddingObserverEventArgs ev)
+		[PluginEvent(ServerEventType.PlayerHandcuff)]
+		public bool PlayerHandcuffed(PlayerHandcuffEvent args)
 		{
-			if (!TutorialPlusPlugin.Config.TutorialObserve173 && ev.Target.Role == RoleTypeId.Tutorial)
+			if (!Plugin.Config.CuffableTutorial && args.Target.Role == RoleTypeId.Tutorial)
 			{
-				TutorialPlusPlugin.DebugLog($"Plugin blocked player {ev.Target.ToLogString()} from becoming a target of SCP173 {ev.Player.ToLogString()}");
-				ev.IsAllowed = false;
+				if (Plugin.Config.Debug)
+					Log.Debug($"Plugin blocked player {args.Target.Nickname} from being disarmed by {args.Player.Nickname}");
+				return false;
 			}
-		}
-
-		public override void OnPlayerChangedRole(PlayerChangedRoleEventArgs ev)
-		{
-			if (ev.NewRole.RoleTypeId == RoleTypeId.Tutorial && ev.ChangeReason == RoleChangeReason.RemoteAdmin)
-			{
-				if (TutorialPlusPlugin.Config.TutorialBypass)
-				{
-					if (TutorialPlusPlugin.Config.Debug)
-						TutorialPlusPlugin.DebugLog($"Plugin enabled bypass mode for {ev.Player.Nickname}");
-					ev.Player.ReferenceHub.serverRoles.BypassMode = true;
-				}
-
-				if (TutorialPlusPlugin.Config.TutorialGodmode)
-				{
-					if (TutorialPlusPlugin.Config.Debug)
-						TutorialPlusPlugin.DebugLog($"Plugin enabled godmode for {ev.Player.Nickname}");
-					ev.Player.ReferenceHub.characterClassManager.GodMode = true;
-				}
-
-				if (TutorialPlusPlugin.Config.TutorialNoclip)
-				{
-					if (TutorialPlusPlugin.Config.Debug)
-						TutorialPlusPlugin.DebugLog($"Plugin enabled noclip for {ev.Player.Nickname}");
-					FpcNoclip.PermitPlayer(ev.Player.ReferenceHub);
-				}
-			}
-			else if (ev.OldRole == RoleTypeId.Tutorial)
-			{
-				if (TutorialPlusPlugin.Config.TutorialBypass)
-				{
-					if (TutorialPlusPlugin.Config.Debug)
-						TutorialPlusPlugin.DebugLog($"Plugin disabled bypass mode for {ev.Player.Nickname}");
-					ev.Player.ReferenceHub.serverRoles.BypassMode = false;
-				}
-
-				if (TutorialPlusPlugin.Config.TutorialGodmode)
-				{
-					if (TutorialPlusPlugin.Config.Debug)
-						TutorialPlusPlugin.DebugLog($"Plugin disabled godmode for {ev.Player.Nickname}");
-					ev.Player.ReferenceHub.characterClassManager.GodMode = false;
-				}
-
-				if (TutorialPlusPlugin.Config.TutorialNoclip)
-				{
-					if (TutorialPlusPlugin.Config.Debug)
-						TutorialPlusPlugin.DebugLog($"Plugin disabled noclip for {ev.Player.Nickname}");
-					FpcNoclip.UnpermitPlayer(ev.Player.ReferenceHub);
-				}
-			}
-		}
-
-		public override void OnPlayerCuffing(PlayerCuffingEventArgs ev)
-		{
-			if (!TutorialPlusPlugin.Config.CuffableTutorial && ev.Target.Role == RoleTypeId.Tutorial)
-			{
-				TutorialPlusPlugin.DebugLog($"Plugin blocked player {ev.Target.Nickname} from being disarmed by {ev.Player.Nickname}");
-				ev.IsAllowed = false;
-			}
+			else return true;
 		}
 	}
 }

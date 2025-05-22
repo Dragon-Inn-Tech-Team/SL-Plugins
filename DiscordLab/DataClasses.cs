@@ -1,4 +1,4 @@
-﻿using LabApi.Features.Wrappers;
+﻿using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,7 +24,7 @@ namespace DiscordLab
 		public Msg(string message)
 		{
 			Type = MessageType.msg;
-			Message = BotLink.MsgRgx.Replace(message, string.Empty);
+			Message = BotSocketConnection.MsgRgx.Replace(message, string.Empty);
 		}
 
 		public string Message;
@@ -62,7 +62,7 @@ namespace DiscordLab
 			}
 			else
 			{
-				var players = Player.List;
+				var players = Player.GetPlayers();
 
 				if (Player.Count < 1)
 				{
@@ -74,14 +74,14 @@ namespace DiscordLab
 				else
 				{
 					int DntCount = 0;
-					List<string> plrNames = [];
+					List<string> plrNames = new List<string>();
 
 					foreach (Player plr in players)
 					{
 						if (plr.IsServer)
 							continue;
 						if (!plr.DoNotTrack)
-							plrNames.Add(BotLink.NameRgx.Replace(plr.Nickname, string.Empty));
+							plrNames.Add(BotSocketConnection.NameRgx.Replace(plr.Nickname, string.Empty));
 						else
 							DntCount++;
 					}

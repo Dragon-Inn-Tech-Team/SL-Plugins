@@ -1,9 +1,9 @@
-﻿using LabApi.Features.Wrappers;
+﻿using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Extensions = RedRightHand.Extensions;
+using Extensions = RedRightHand.Core.Extensions;
 
 namespace ExternalQuery
 {
@@ -17,6 +17,10 @@ namespace ExternalQuery
 
 				string command = arg[0];
 				string searchvariable = string.Empty;
+				TimeSpan duration;
+				string durationString = string.Empty;
+				string reason = string.Empty;
+				Player player = null;
 
 				if (arg.Count() < 4 || arg[1].Length < 1)
 					return $"{arg[0]} [UserID/IP] [Duration] [Reason]";
@@ -39,13 +43,18 @@ namespace ExternalQuery
 					arg = arg.Skip(1).ToArray();
 				}
 
-				var durationString = arg[0];
-				if (!Extensions.TryGetBanDuration(durationString, out var duration))
+				durationString = arg[0];
+				var chars = durationString.Where(Char.IsLetter).ToArray();
+				if (chars.Length < 1 || !int.TryParse(new string(durationString.Where(Char.IsDigit).ToArray()), out int amount) || !Extensions.ValidDurationUnits.Contains(chars[0]) || amount < 1)
 					return "Invalid duration provided";
 
-				var reason = string.Join(" ", arg.Skip(1).ToArray());
+				GetPlayer(searchvariable, out player);
 
-				if (Extensions.TryFindPlayer(searchvariable, out var player))
+				duration = Extensions.GetBanDuration(chars[0], amount);
+				arg = arg.Skip(1).ToArray();
+				reason = string.Join(" ", arg);
+
+				if (player != null)
 				{
 
 					BanHandler.IssueBan(new BanDetails
@@ -118,7 +127,7 @@ namespace ExternalQuery
 				arg = arg.Skip(1).ToArray();
 			}
 
-			if (!Extensions.TryFindPlayer(searchvariable, out var player))
+			if (!GetPlayer(searchvariable, out Player player))
 				return $"Unable to find player {searchvariable.Replace("", "\\")}";
 
 			string reason = string.Join(" ", arg);
@@ -152,6 +161,46 @@ namespace ExternalQuery
 			BanHandler.RemoveBan(arg[1], (validUID ? BanHandler.BanType.UserId : BanHandler.BanType.IP));
 
 			return $"{arg[1]} has been unbanned.";
+		}
+
+
+		private static bool GetPlayer(string SearchParameter, out Player Plr)
+		{
+			Plr = null;
+
+			var plrs = Player.GetPlayers();
+			IEnumerable<Player> posPlrs;
+
+			if (SearchParameter.Contains('@'))
+			{
+				posPlrs = plrs.Where(p => p.UserId == SearchParameter).ToArray();
+
+				if (posPlrs.Any())
+				{
+					Plr = posPlrs.First();
+					return true;
+				}
+			}
+			else if (IPAddress.TryParse(SearchParameter, out IPAddress IP))
+			{
+				posPlrs = plrs.Where(p => p.IpAddress == SearchParameter).ToArray();
+
+				if (posPlrs.Any())
+				{
+					Plr = posPlrs.First();
+					return true;
+				}
+			}
+
+			posPlrs = plrs.Where(p => p.Nickname.ToLowerInvariant() == SearchParameter.ToLowerInvariant()).ToArray();
+
+			if (posPlrs.Any())
+			{
+				Plr = posPlrs.First();
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

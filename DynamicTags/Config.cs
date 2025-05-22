@@ -1,17 +1,15 @@
-﻿using RedRightHand.CustomPlugin;
-
-namespace DynamicTags
+﻿namespace DynamicTags
 {
-	public class Config : CustomPluginConfig
+	public class Config
 	{
 		/// <summary>
 		/// Endpoint location for the external web API that the plugin will interact with.
 		/// </summary>
-		public string ApiUrl { get; set; } = "https://api.dragonscp.co.uk/";
+		public string ApiEndpoint { get; set; } = "https://google.co.uk/";
 
-		public bool TrackerEnabled { get; set; } = false;
+		public bool TrackerEnabled { get; set; } = true;
 		public bool TagsEnabled { get; set; } = true;
-		public bool ReportingEnabled { get; set; } = false;
+		public bool ReportingEnabled { get; set; } = true;
 		public bool AutomaticNorthwoodReservedSlot { get; set; } = true;
 	}
 }

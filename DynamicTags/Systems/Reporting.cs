@@ -1,48 +1,44 @@
-﻿using LabApi.Events.Arguments.PlayerEvents;
-using LabApi.Events.CustomHandlers;
-using LabApi.Features.Wrappers;
-using Newtonsoft.Json;
-using RedRightHand;
+﻿using Newtonsoft.Json;
+using PluginAPI.Core;
+using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
+using PluginAPI.Events;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using Extensions = RedRightHand.Extensions;
+using Extensions = RedRightHand.Core.Extensions;
 
 
 namespace DynamicTags.Systems
 {
-	public class Reporting : CustomEventsHandler
+	public class Reporting
 	{
-		public static Dictionary<string, DateTime> ReportDict = new Dictionary<string, DateTime>();
-
-		public override void OnPlayerReportingPlayer(PlayerReportingPlayerEventArgs ev)
+		[PluginEvent(ServerEventType.PlayerReport), PluginPriority(LoadPriority.Highest)]
+		public bool OnPlayerReport(PlayerReportEvent args)
 		{
-			if (ReportDict.TryGetValue(ev.Player.UserId, out var lastReport) && (DateTime.Now - lastReport).TotalMinutes < 2)
+			if (args.Player.TemporaryData.Contains("report") && (DateTime.Now - new DateTime(long.Parse(args.Player.TemporaryData.Get<string>("report")))).TotalMinutes < 5)
 			{
-				ev.IsAllowed = false;
+				return false;
 			}
-		}
-
-		public override void OnPlayerReportedPlayer(PlayerReportedPlayerEventArgs ev)
-		{
 			var reportDetails = new PlayerReportDetails
 			{
-				PlayerName = ev.Target.Nickname,
-				PlayerID = ev.Target.UserId,
-				PlayerRole = ev.Target.Role.ToString(),
-				PlayerAddress = ev.Target.IpAddress,
-				ReporterName = ev.Player.Nickname,
-				ReporterID = ev.Player.UserId,
-				ReporterRole = ev.Player.Role.ToString(),
-				Reason = ev.Reason,
-				ServerAddress = Server.IpAddress,
+				PlayerName = args.Target.Nickname,
+				PlayerID = args.Target.UserId,
+				PlayerRole = args.Target.Role.ToString(),
+				PlayerAddress = args.Target.IpAddress,
+				ReporterName = args.Player.Nickname,
+				ReporterID = args.Player.UserId,
+				ReporterRole = args.Player.Role.ToString(),
+				Reason = args.Reason,
+				ServerAddress = Server.ServerIpAddress,
 				ServerPort = Server.Port.ToString(),
 			};
 
-			Extensions.Post(DynamicTagsPlugin.Config.ApiUrl + "scpsl/report", new StringContent(JsonConvert.SerializeObject(reportDetails), Encoding.UTF8, "application/json"));
+			Extensions.Post(Plugin.Config.ApiEndpoint + "scpsl/report", new StringContent(JsonConvert.SerializeObject(reportDetails), Encoding.UTF8, "application/json"));
 
-			ReportDict.AddToOrReplaceValue(ev.Player.UserId, DateTime.Now);
+			args.Player.TemporaryData.Add("report", DateTime.Now.Ticks.ToString());
+
+			return true;
 		}
 	}
 }

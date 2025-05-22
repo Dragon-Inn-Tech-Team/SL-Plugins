@@ -32,85 +32,159 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\Check\Ban.cs" />
-    <Compile Include="Commands\Check\CheckParent.cs" />
-    <Compile Include="Commands\Check\Mute.cs" />
-    <Compile Include="Commands\Misc\RMute.cs" />
+    <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DnsClient">
+      <HintPath>..\References\DnsClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Components, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Mirror.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="NorthwoodLib, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\NorthwoodLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NWAPIPermissionSystem, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\NWAPIPermissionSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="PluginAPI, Version=13.1.3.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\PluginAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Pooling">
+      <HintPath>..\References\Pooling.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\Grenade\Explode.cs" />
+    <Compile Include="Commands\Misc\MassRenaming.cs" />
+    <Compile Include="Commands\Misc\Mock.cs" />
+    <Compile Include="Commands\Misc\rmute.cs" />
+    <Compile Include="Commands\Misc\Vote.cs" />
+    <Compile Include="Commands\Misc\BanCheck.cs" />
+    <Compile Include="Features\Depricated\Hush.cs" />
+    <Compile Include="Commands\Misc\MuteCheck.cs" />
+    <Compile Include="Features\Events\WeeklyEvents\EventManager.cs" />
+    <Compile Include="Features\Events\WeeklyEvents\Events.cs" />
+    <Compile Include="Features\Humans\CustomHumanSettings.cs" />
+    <Compile Include="Features\Humans\Disarming\DisarmingEvents.cs" />
+    <Compile Include="Features\Humans\LateJoin\LateJoinEvents.cs" />
+    <Compile Include="Features\Humans\LateSpawn\LateSpawnEvents.cs" />
+    <Compile Include="Features\Humans\TutorialFix\TutorialEvents.cs" />
+    <Compile Include="Features\Items\Grenades\Commands\Flash.cs" />
+    <Compile Include="Features\Items\Grenades\Commands\Grenade.cs" />
+    <Compile Include="Features\Items\Grenades\Commands\Ball.cs" />
     <Compile Include="Commands\Player\Drop.cs" />
-    <Compile Include="Commands\Player\Explode.cs" />
-    <Compile Include="Commands\Player\Hint.cs" />
-    <Compile Include="Commands\Player\PlayerParent.cs" />
-    <Compile Include="Commands\Player\Pocket.cs" />
-    <Compile Include="Commands\Player\SendTo.cs" />
-    <Compile Include="Commands\Player\Tower2.cs" />
-    <Compile Include="Commands\Player\TeleportToCoords.cs" />
-    <Compile Include="Commands\Player\Trip.cs" />
-    <Compile Include="Commands\Renaming\MassRename.cs" />
-    <Compile Include="Commands\Renaming\MassUnname.cs" />
-    <Compile Include="Commands\Spawn\Ball.cs" />
-    <Compile Include="Commands\Spawn\Flashbang.cs" />
-    <Compile Include="Commands\Spawn\Grenade.cs" />
-    <Compile Include="Commands\Spawn\SpawnParent.cs" />
-    <Compile Include="Features\EventRounds\Events\CustomEventRound.cs" />
-    <Compile Include="Core\CustomFeature.cs" />
-    <Compile Include="Features\Blackouts\Blackouts.cs" />
-    <Compile Include="Features\CustomSettings\CustomHumanSettings.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Capybara.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\CustomWeaponParent.cs" />
-    <Compile Include="Features\CustomWeapons\CustomWeapons.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\CapybaraGun.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\BallLauncher.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\CustomWeaponBase.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\FlashLauncher.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\GrenadeLauncher.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\RagdollLauncher.cs" />
-    <Compile Include="Features\Disarming\BetterDisarming.cs" />
-    <Compile Include="Features\DMSRandomized\DMSEvents.cs" />
-    <Compile Include="Commands\Gaslighting\Gullible.cs" />
-    <Compile Include="Features\EventRounds\Events\HeavyHideAndSeek.cs" />
-    <Compile Include="Features\EventRounds\Events\HotPotato.cs" />
-    <Compile Include="Features\EventRounds\Events\OneInTheChamber.cs" />
-    <Compile Include="Features\EventRounds\Events\SnowballFight\SnowballCommand.cs" />
-    <Compile Include="Features\EventRounds\Events\SnowballFight\SnowballEvents.cs" />
-    <Compile Include="Features\EventRounds\Events\TDMInfection.cs" />
-    <Compile Include="Features\EventRounds\Events\SCPInfection.cs" />
-    <Compile Include="Features\RandomSize\RandomSize.cs" />
-    <Compile Include="Features\TestingFeatures\Commands\AI.cs" />
-    <Compile Include="Features\TestingFeatures\Commands\Fill.cs" />
-    <Compile Include="Features\TestingFeatures\Commands\GetDest.cs" />
-    <Compile Include="Features\TestingFeatures\DummyAI.cs" />
-    <Compile Include="Features\TestingFeatures\Navigation\NavigationEvents.cs" />
-    <Compile Include="Features\Holidays\Carpincho.cs" />
-    <Compile Include="Commands\Size\SizeCommand.cs" />
+    <Compile Include="Commands\Teleport\Pocket.cs" />
+    <Compile Include="Features\Map\DMSBullshit\DMSEvents.cs" />
+    <Compile Include="Features\Testing\Navigation\NavigationEvents.cs" />
+    <Compile Include="Features\Map\Carpincho.cs" />
+    <Compile Include="Features\Map\RollingBlackouts\BlackoutEvents.cs" />
+    <Compile Include="Features\Map\RollingBlackouts\BlackoutManager.cs" />
+    <Compile Include="Features\Players\Size\SizeCommand.cs" />
+    <Compile Include="Commands\Teleport\SendToPlayer.cs" />
+    <Compile Include="Commands\Teleport\TeleportToCoords.cs" />
+    <Compile Include="Commands\Test.cs" />
+    <Compile Include="Commands\Teleport\Tower2.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Commands\Size\SizeEvents.cs" />
-    <Compile Include="Commands\Size\SizeManager.cs" />
-    <Compile Include="Features\SCPSwap\CustomSCPSettings.cs" />
-    <Compile Include="Features\SCP3114Enable\SCP3114Overhaul.cs" />
-    <Compile Include="Features\DamageAnnouncements\DamageAnnouncements.cs" />
-    <Compile Include="Features\DoorLocking\Commands\Doors.cs" />
-    <Compile Include="Features\DoorLocking\DoorLocking.cs" />
-    <Compile Include="Features\SCPSwap\SCPSwap.cs" />
-    <Compile Include="Features\SurfaceLightingFix\SurfaceLightObject.cs" />
-    <Compile Include="Features\TestingFeatures\TestingDummies.cs" />
-    <Compile Include="CustomCommandsPlugin.cs" />
-    <Compile Include="Features\EventRounds\EventRounds.cs" />
-    <Compile Include="Features\LateJoin\LateJoin.cs" />
-    <Compile Include="Features\LateSpawn\LateSpawn.cs" />
-    <Compile Include="Features\SurfaceLightingFix\SurfaceLightingFix.cs" />
-    <Compile Include="Features\Voting\Commands\StartVote.cs" />
-    <Compile Include="Features\Voting\Votes.cs" />
+    <Compile Include="Features\Players\Size\SizeEvents.cs" />
+    <Compile Include="Features\Players\Size\SizeManager.cs" />
+    <Compile Include="Features\SCPs\CustomSCPSettings.cs" />
+    <Compile Include="Features\Depricated\NameFix.cs" />
+    <Compile Include="Features\SCPs\SCP3114\SCP3114Overhaul.cs" />
+    <Compile Include="Commands\Player\SendHint.cs" />
+    <Compile Include="Features\DoorLocking\Commands\Destroy.cs" />
+    <Compile Include="Features\DoorLocking\Commands\Lock.cs" />
+    <Compile Include="Features\DoorLocking\LockingEvents.cs" />
+    <Compile Include="Features\Map\SurfaceLightFix\LightFixEvents.cs" />
+    <Compile Include="Features\Map\SurfaceLightFix\SurfaceLightObject.cs" />
+    <Compile Include="Features\SCPs\DamageAnnouncements\AnnouncementEvents.cs" />
+    <Compile Include="Features\SCPs\DamageAnnouncements\AnnouncementManager.cs" />
+    <Compile Include="Features\Testing\TestingDummies.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Ball.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Flash.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Grenade.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Ragdoll.cs" />
-    <Compile Include="Features\Misc\PocketRagdollHandler.cs" />
-    <Compile Include="Features\SCP079Removal\SCP079Removal.cs" />
-    <Compile Include="Features\SCPSwap\Commands\List.cs" />
-    <Compile Include="Features\SCPSwap\Commands\TriggerReplace.cs" />
+    <Compile Include="Features\Depricated\SCP008.cs" />
+    <Compile Include="Features\Events\DClassBattle\BattleCommand.cs" />
+    <Compile Include="Features\Events\GlobalEvents.cs" />
+    <Compile Include="Features\Events\Infection\InfectionCommand.cs" />
+    <Compile Include="Features\Events\Infection\InfectionEvents.cs" />
+    <Compile Include="Features\Events\SnowballFight\SnowballCommand.cs" />
+    <Compile Include="Features\Events\SnowballFight\SnowballEvents.cs" />
+    <Compile Include="Features\Events\TDMInfection\TDMInfectionCommand.cs" />
+    <Compile Include="Features\Items\ItemManager.cs" />
+    <Compile Include="Features\Items\Weapons\Commands\Ball.cs" />
+    <Compile Include="Features\Items\Weapons\Commands\Flash.cs" />
+    <Compile Include="Features\Items\Weapons\Commands\Grenade.cs" />
+    <Compile Include="Features\Items\Weapons\Commands\Ragdoll.cs" />
+    <Compile Include="Features\Items\Weapons\WeaponEvents.cs" />
+    <Compile Include="Features\Ragdoll\Commands\Trip.cs" />
+    <Compile Include="Features\Ragdoll\PlayerRagdollManager.cs" />
+    <Compile Include="Features\Ragdoll\PocketRagdollHandler.cs" />
+    <Compile Include="Features\SCPs\SCP079Removal\RemovalEvents.cs" />
+    <Compile Include="Features\SCPs\Swap\Commands\Accept.cs" />
+    <Compile Include="Features\SCPs\Swap\Commands\Deny.cs" />
+    <Compile Include="Features\SCPs\Swap\Commands\Human.cs" />
+    <Compile Include="Features\SCPs\Swap\Commands\List.cs" />
+    <Compile Include="Features\SCPs\Swap\Commands\Replace.cs" />
+    <Compile Include="Features\SCPs\Swap\Commands\Swap.cs" />
+    <Compile Include="Features\SCPs\Swap\Commands\TriggerReplace.cs" />
+    <Compile Include="Features\SCPs\Swap\SwapEvents.cs" />
+    <Compile Include="Features\SCPs\Swap\SwapManager.cs" />
     <Compile Include="Features\Voting\Commands\No.cs" />
     <Compile Include="Features\Voting\Commands\Yes.cs" />
+    <Compile Include="Features\Voting\VoteManager.cs" />
+    <Compile Include="Features\Voting\VotingEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -120,20 +194,6 @@
       <Project>{47ebcba8-07aa-44d5-988d-b67cdccb3fd0}</Project>
       <Name>RedRightHand</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Features\EventRounds\Commands\" />
-    <Folder Include="Features\WeeklyEvents\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\UnityEngine.AIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
