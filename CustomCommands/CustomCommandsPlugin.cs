@@ -9,6 +9,7 @@ using CustomCommands.Features;
 using CustomCommands.Core;
 using LabApi.Features.Console;
 using CustomCommands.Features.CustomSettings;
+using RedRightHand.CustomRoles;
 
 namespace CustomCommands
 {
@@ -71,13 +72,15 @@ namespace CustomCommands
 				new Features.Voting.Votes(Config.EnablePlayerVoting),
 				new Features.RandomSize.RandomSize(Config.EnableRandomSizes),
 				new Features.CustomWeapons.CustomWeaponsManager(Config.EnableSpecialWeapons),
-				new Features.CustomRoles.CustomRolesManager(Config.EnableCustomRoles),
 #if DEBUG		
 				new Features.Blackouts.Blackouts(Config.EnableBlackout),
 				new Features.TestingFeatures.TestingDummies(Config.EnableDummies),
 				new Features.Testing.Navigation.NavigationEvents(Config.EnableDummies),
 #endif
 			];
+
+			if (Config.EnableCustomRoles)
+				CustomRolesManager.RegisterEvents();
 
 			if (ServerSpecificSettingsSync.DefinedSettings == null)
 				ServerSpecificSettingsSync.DefinedSettings = [];

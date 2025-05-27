@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using RedRightHand;
 using RedRightHand.Commands;
+using RedRightHand.CustomRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,19 +34,21 @@ namespace CustomCommands.Features.CustomRoles.Commands
 			if (!sender.CanRun(this, arguments, out response, out var players, out var pSender))
 				return false;
 
-			if (Enum.TryParse<CustomRolesManager.CustomRoleType>(arguments.ElementAt(1), true, out var roleEnum))
+			var role = arguments.ElementAt(1);
+
+			if (CustomRolesManager.AvailableRoles.ContainsKey(role))
 			{
 				foreach(var player in players)
 				{
-					CustomRolesManager.EnableRole(player, roleEnum);
+					CustomRolesManager.EnableRole(player, role);
 				}
 
-				response = $"{players.Count} player(s) set to custom role {arguments.ElementAt(1)}";
+				response = $"{players.Count} player(s) set to custom role {role}";
 				return true;
 			}
 			else
 			{
-				response = $"Unable to find role {arguments.ElementAt(1)}. It may not exist, or hasn't been enabled";
+				response = $"Unable to find role {role}. It may not exist, or hasn't been enabled";
 				return false;
 			}
 		}
