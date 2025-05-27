@@ -26,10 +26,10 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 		}
 
 		/// <summary>
-		/// Returns true if the weapon has been toggled on for the player
+		/// Toggles the weapon on or off for the player
 		/// </summary>
 		/// <param name="player"></param>
-		/// <returns></returns>
+		/// <returns>True if the weapon has been toggled on for the player</returns>
 		public virtual bool ToggleWeapon(Player player)
 		{
 			if (EnabledWeapons.ContainsKey(player.UserId))
@@ -44,6 +44,10 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 			}				
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="player"></param>
 		public virtual void ShootWeapon(Player player) { }
 
 		public virtual void HitPlayer(PlayerHurtingEventArgs ev) { }

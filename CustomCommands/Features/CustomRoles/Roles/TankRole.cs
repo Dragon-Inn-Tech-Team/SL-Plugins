@@ -6,6 +6,7 @@ using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp096;
 using PlayerStatsSystem;
 using RedRightHand;
+using RedRightHand.CustomRoles;
 using RemoteAdmin.Communication;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,6 @@ namespace CustomCommands.Features.CustomRoles.Roles
 {
 	public class TankRole : CustomRoleBase
 	{
-		public override CustomRolesManager.CustomRoleType CustomRole => CustomRolesManager.CustomRoleType.Tank;
-
 		public override string Name => "Heavy Enforcer";
 
 		public override void EnableRole(Player player)

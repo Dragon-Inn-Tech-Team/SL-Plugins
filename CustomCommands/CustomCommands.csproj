@@ -52,8 +52,6 @@
     <Compile Include="Commands\Spawn\Grenade.cs" />
     <Compile Include="Commands\Spawn\SpawnParent.cs" />
     <Compile Include="Features\CustomRoles\Commands\CustomRoleCommand.cs" />
-    <Compile Include="Features\CustomRoles\CustomRolesManager.cs" />
-    <Compile Include="Features\CustomRoles\Roles\CustomRoleBase.cs" />
     <Compile Include="Features\CustomRoles\Roles\MedicRole.cs" />
     <Compile Include="Features\CustomRoles\Roles\TankRole.cs" />
     <Compile Include="Features\EventRounds\Events\CustomEventRound.cs" />

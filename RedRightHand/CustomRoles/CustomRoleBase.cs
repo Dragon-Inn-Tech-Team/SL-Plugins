@@ -1,16 +1,9 @@
-﻿using CustomCommands.Core;
-using LabApi.Events.Arguments.PlayerEvents;
+﻿using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Features.Wrappers;
 using PlayerRoles;
 using RedRightHand;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CustomCommands.Features.CustomRoles.CustomRolesManager;
 
-namespace CustomCommands.Features.CustomRoles.Roles
+namespace RedRightHand.CustomRoles
 {
 	public abstract class CustomRoleBase
 	{
@@ -35,44 +28,30 @@ namespace CustomCommands.Features.CustomRoles.Roles
 			}
 		}
 
-		public abstract CustomRoleType CustomRole { get; }
 		public abstract string Name { get; }
 
 		public virtual void EnableRole(Player player)
 		{
 			player.CustomInfo = $"{teamToNiceName(player.Team)} - {Name}";
-			ActiveRoles.AddToOrReplaceValue(player.UserId, CustomRole);
 		}
-
 		public virtual void DisableRole(Player player)
 		{
 			player.CustomInfo = string.Empty;
-			ActiveRoles.Remove(player.UserId);
 		}
 
-		public virtual bool ToggleRole(Player player)
-		{
-			if (ActiveRoles.ContainsKey(player.UserId))
-			{
-				DisableRole(player);
-				return false;
-			}
-			else
-			{
-				EnableRole(player);
-				return true;
-			}
-		}
+
+
+
 
 		public virtual void PlayerHurt(PlayerHurtingEventArgs ev) { }
 		public virtual void PlayerDied(PlayerDeathEventArgs ev)
 		{
-			DisableRole(ev.Player);
+			CustomRolesManager.DisableRole(ev.Player);
 		}
 
 		public virtual void PlayerChangeRole(PlayerChangedRoleEventArgs ev)
 		{
-			DisableRole(ev.Player);
+			CustomRolesManager.DisableRole(ev.Player);
 		}
 	}
 }

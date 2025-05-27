@@ -1,6 +1,7 @@
 ﻿using InventorySystem.Configs;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Features.Wrappers;
+using RedRightHand.CustomRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,6 @@ namespace CustomCommands.Features.CustomRoles.Roles
 {
 	public class MedicRole : CustomRoleBase
 	{
-		public override CustomRolesManager.CustomRoleType CustomRole => CustomRolesManager.CustomRoleType.Medic;
-
 		public override string Name => "Medic";
 
 		public override void EnableRole(Player player)
