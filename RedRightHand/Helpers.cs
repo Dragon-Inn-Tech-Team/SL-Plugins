@@ -15,6 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using InventorySystem;
+using InventorySystem.Items.Pickups;
+using Logger = LabApi.Features.Console.Logger;
 
 namespace RedRightHand
 {
@@ -35,8 +38,31 @@ namespace RedRightHand
 			return velocity;
 		}
 
+		public static bool SpawnItem(ItemType type, Vector3 spawnLocation, out ItemPickupBase customWeapon)
+		{
+			try
+			{
+				if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
+				{
+					customWeapon = null;
+					return false;
+				}
+
+				customWeapon = InventoryExtensions.ServerCreatePickup(itemBase, new PickupSyncInfo(type, itemBase.Weight, ItemSerialGenerator.GenerateNext()), spawnLocation);
+				return true;
+			}
+			catch(Exception e)
+			{
+				Logger.Error(e.ToString);
+				customWeapon = null;
+				return false;
+			}
+		}
+
+
+
 		public static void SpawnGrenade<T>(Player Thrower, ItemType Item) where T : TimeGrenade =>
-	SpawnGrenade<T>(Thrower, Item, new Vector3(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1)));
+			SpawnGrenade<T>(Thrower, Item, new Vector3(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1)));
 
 		public static void SpawnGrenade<T>(Player Thrower, ItemType Item, Vector3 Direction) where T : TimeGrenade
 		{

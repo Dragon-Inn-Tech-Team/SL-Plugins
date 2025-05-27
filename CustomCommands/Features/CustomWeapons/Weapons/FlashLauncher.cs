@@ -14,6 +14,7 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 	public class FlashLauncher : CustomWeaponBase
 	{
 		public override string Name => "Flashbang Launcher";
+		public override ItemType Model => ItemType.GunCom45;
 
 		public override void ShootWeapon(PlayerShootingWeaponEventArgs ev)
 		{

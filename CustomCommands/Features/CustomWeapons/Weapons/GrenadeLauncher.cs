@@ -14,6 +14,7 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 	public class GrenadeLauncher : CustomWeaponBase
 	{
 		public override string Name => "Grenade Launcher";
+		public override ItemType Model => ItemType.GunCom45;
 
 		public override void ShootWeapon(PlayerShootingWeaponEventArgs ev)
 		{
