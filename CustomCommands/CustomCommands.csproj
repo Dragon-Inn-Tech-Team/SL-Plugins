@@ -60,10 +60,8 @@
     <Compile Include="Features\CustomSettings\CustomHumanSettings.cs" />
     <Compile Include="Features\CustomWeapons\Commands\Capybara.cs" />
     <Compile Include="Features\CustomWeapons\Commands\CustomWeaponParent.cs" />
-    <Compile Include="Features\CustomWeapons\CustomWeaponsManager.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\CapybaraGun.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\BallLauncher.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\CustomWeaponBase.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\FlashLauncher.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\GrenadeLauncher.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\RagdollLauncher.cs" />

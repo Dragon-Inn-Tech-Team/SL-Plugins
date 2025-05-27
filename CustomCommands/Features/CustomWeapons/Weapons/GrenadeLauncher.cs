@@ -1,6 +1,8 @@
 ﻿using InventorySystem.Items.ThrowableProjectiles;
+using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Features.Wrappers;
 using RedRightHand;
+using RedRightHand.CustomWeapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +13,11 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 {
 	public class GrenadeLauncher : CustomWeaponBase
 	{
-		public override CustomWeaponsManager.CustomWeaponType WeaponType => CustomWeaponsManager.CustomWeaponType.Grenade;
-
 		public override string Name => "Grenade Launcher";
 
-		public override void ShootWeapon(Player player)
+		public override void ShootWeapon(PlayerShootingWeaponEventArgs ev)
 		{
-			Helpers.SpawnGrenade<TimeGrenade>(player, ItemType.GrenadeHE, Helpers.RandomThrowableVelocity(player.Camera.transform));
+			Helpers.SpawnGrenade<TimeGrenade>(ev.Player, ItemType.GrenadeHE, Helpers.RandomThrowableVelocity(ev.Player.Camera.transform));
 		}
 	}
 }

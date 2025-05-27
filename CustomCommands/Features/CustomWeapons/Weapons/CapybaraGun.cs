@@ -5,6 +5,7 @@ using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Features.Wrappers;
 using Mirror;
 using RedRightHand;
+using RedRightHand.CustomWeapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,6 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 {
 	public class CapybaraGun : CustomWeaponBase
 	{
-		public override CustomWeaponsManager.CustomWeaponType WeaponType => CustomWeaponsManager.CustomWeaponType.Capybara;
-
 		public override string Name => "CapybaraGun";
 
 		public override void PlaceBulletHole(PlayerPlacedBulletHoleEventArgs ev)

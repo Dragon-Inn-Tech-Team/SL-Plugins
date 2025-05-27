@@ -10,6 +10,7 @@ using CustomCommands.Core;
 using LabApi.Features.Console;
 using CustomCommands.Features.CustomSettings;
 using RedRightHand.CustomRoles;
+using RedRightHand.CustomWeapons;
 
 namespace CustomCommands
 {
@@ -70,8 +71,7 @@ namespace CustomCommands
 				new Features.SCP3114Enable.SCP3114Overhaul(Config.EnableSCP3114),
 				new Features.SCPSwap.SCPSwap(Config.EnableScpSwap),
 				new Features.Voting.Votes(Config.EnablePlayerVoting),
-				new Features.RandomSize.RandomSize(Config.EnableRandomSizes),
-				new Features.CustomWeapons.CustomWeaponsManager(Config.EnableSpecialWeapons),
+				new Features.RandomSize.RandomSize(Config.EnableRandomSizes),	
 #if DEBUG		
 				new Features.Blackouts.Blackouts(Config.EnableBlackout),
 				new Features.TestingFeatures.TestingDummies(Config.EnableDummies),
@@ -81,6 +81,9 @@ namespace CustomCommands
 
 			if (Config.EnableCustomRoles)
 				CustomRolesManager.RegisterEvents();
+
+			if (Config.EnableSpecialWeapons)
+				CustomWeaponManager.RegisterEvents();
 
 			if (ServerSpecificSettingsSync.DefinedSettings == null)
 				ServerSpecificSettingsSync.DefinedSettings = [];

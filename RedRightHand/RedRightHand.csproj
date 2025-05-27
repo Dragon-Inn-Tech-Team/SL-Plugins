@@ -37,6 +37,8 @@
     <Compile Include="CustomRoles\CustomRoleManager.cs" />
     <Compile Include="CustomSettings\CustomSettingsBase.cs" />
     <Compile Include="CustomSettings\CustomSettingsManager.cs" />
+    <Compile Include="CustomWeapons\CustomWeaponBase.cs" />
+    <Compile Include="CustomWeapons\CustomWeaponManager.cs" />
     <Compile Include="DataStores\FFDStore.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers.cs" />
@@ -62,8 +64,6 @@
       <HintPath>..\References\UnityEngine.TerrainPhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CustomWeapons\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
