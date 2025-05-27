@@ -95,10 +95,9 @@ namespace RedRightHand.CustomRoles
 		}
 
 		/// <summary>
-		/// Returns if the player has a currently active role, along with the <see cref="CustomRoleType">Type</see> and <see cref="CustomRoleBase">Base</see>
+		/// Returns if the player has a currently active role, along with the <see cref="CustomRoleBase">Base</see>
 		/// </summary>
 		/// <param name="player"></param>
-		/// <param name="roleType"></param>
 		/// <param name="roleBase"></param>
 		/// <returns>Returns true if the player is currently playing as a custom role</returns>
 		public static bool GetCustomRole(this Player player, out CustomRoleBase roleBase)
