@@ -24,6 +24,7 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 	public class RagdollLauncher : CustomWeaponBase
 	{
 		public override string Name => "Ragdoll Launcher";
+		public override ItemType Model => ItemType.GunCom45;
 
 		static RoleTypeId[] ragdolls = new RoleTypeId[]
 		{

@@ -11,6 +11,8 @@ using LabApi.Features.Console;
 using CustomCommands.Features.CustomSettings;
 using RedRightHand.CustomRoles;
 using RedRightHand.CustomWeapons;
+using CustomCommands.Features.CustomRoles.Roles;
+using CustomCommands.Features.CustomWeapons.Weapons;
 
 namespace CustomCommands
 {
@@ -80,10 +82,29 @@ namespace CustomCommands
 			];
 
 			if (Config.EnableCustomRoles)
+			{
+				CustomRolesManager.RegisterRoles(new System.Collections.Generic.Dictionary<string, CustomRoleBase>
+				{
+					{ "medic", new MedicRole() },
+					{ "tank", new TankRole() }
+				});
+
 				CustomRolesManager.RegisterEvents();
+			}
 
 			if (Config.EnableSpecialWeapons)
+			{
+				CustomWeaponManager.RegisterWeapons(new System.Collections.Generic.Dictionary<string, CustomWeaponBase>
+				{
+					{ "ball", new BallLauncher() },
+					{ "capybara", new CapybaraGun() },
+					{ "flash", new FlashLauncher() },
+					{ "grenade", new GrenadeLauncher() },
+					{ "ragdoll", new RagdollLauncher() },
+				});
+
 				CustomWeaponManager.RegisterEvents();
+			}
 
 			if (ServerSpecificSettingsSync.DefinedSettings == null)
 				ServerSpecificSettingsSync.DefinedSettings = [];
@@ -96,13 +117,11 @@ namespace CustomCommands
 
 			ServerSpecificSettingsSync.DefinedSettings = ServerSpecificSettingsSync.DefinedSettings.Concat(CustomSettingsManager.ActivateAllSettings(settings)).ToArray();
 			ServerSpecificSettingsSync.SendToAll();
-
-			//RagdollManager.OnRagdollSpawned += Features.Ragdoll.PocketRagdollHandler.RagdollManager_OnRagdollSpawned;
 		}
 
 		public override void Disable()
 		{
-			foreach(var a in features)
+			foreach (var a in features)
 			{
 				if (a.isEnabled)
 					a.OnDisabled();

@@ -58,8 +58,7 @@
     <Compile Include="Core\CustomFeature.cs" />
     <Compile Include="Features\Blackouts\Blackouts.cs" />
     <Compile Include="Features\CustomSettings\CustomHumanSettings.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Capybara.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\CustomWeaponParent.cs" />
+    <Compile Include="Features\CustomWeapons\Commands\CustomWeaponCommand.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\CapybaraGun.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\BallLauncher.cs" />
     <Compile Include="Features\CustomWeapons\Weapons\FlashLauncher.cs" />
@@ -102,10 +101,6 @@
     <Compile Include="Features\Voting\Commands\StartVote.cs" />
     <Compile Include="Features\Voting\Votes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Ball.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Flash.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Grenade.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Ragdoll.cs" />
     <Compile Include="Features\Misc\PocketRagdollHandler.cs" />
     <Compile Include="Features\SCP079Removal\SCP079Removal.cs" />
     <Compile Include="Features\SCPSwap\Commands\List.cs" />

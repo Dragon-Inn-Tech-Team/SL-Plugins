@@ -8,6 +8,7 @@ namespace RedRightHand.CustomWeapons
 	{
 		public uint Serial { get; private set; }
 		public abstract string Name { get; }
+		public abstract ItemType Model { get; }
 
 		public virtual void EnableWeapon(uint serial)
 		{

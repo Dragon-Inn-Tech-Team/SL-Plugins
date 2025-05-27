@@ -1,10 +1,18 @@
-﻿using LabApi.Events.Arguments.PlayerEvents;
+﻿using InventorySystem.Items.Pickups;
+using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.CustomHandlers;
+using LabApi.Features.Console;
 using LabApi.Features.Wrappers;
 using MonoMod.Utils;
+using PlayerRoles;
 using PlayerStatsSystem;
-using RedRightHand.CustomRoles;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+using Logger = LabApi.Features.Console.Logger;
 
 namespace RedRightHand.CustomWeapons
 {
@@ -35,12 +43,29 @@ namespace RedRightHand.CustomWeapons
 			}
 		}
 
+		public static bool SpawnCustomWeapon(string type, Vector3 spawnLocation, out ItemPickupBase customWeapon)
+		{
+			//Logger.Info($"{Helpers.SpawnItem(AvailableWeapons[type].Model, spawnLocation, out customWeapon)}");
+
+			if (AvailableWeapons.ContainsKey(type) && Helpers.SpawnItem(AvailableWeapons[type].Model, spawnLocation, out customWeapon))
+			{
+				EnableWeapon(customWeapon.Info.Serial, type);
+				return true;
+			}
+			else
+			{
+				customWeapon = null;
+				return false;
+			}
+		}
+
+
 		/// <summary>
 		/// Enable a custom weapon for the specified item serial. It will automatically disable any other currently active custom weapon for the specified serial.
 		/// </summary>
 		/// <param name="serial"></param>
 		/// <param name="weaponType"></param>
-		public static void EnableWeapon(ushort serial, string weaponType)
+		public static bool EnableWeapon(ushort serial, string weaponType)
 		{
 			if (ActiveWeapons.ContainsKey(serial))
 				DisableWeapon(serial);
@@ -49,7 +74,11 @@ namespace RedRightHand.CustomWeapons
 			{
 				AvailableWeapons[weaponType].EnableWeapon(serial);
 				ActiveWeapons.Add(serial, weaponType);
+
+				return true;
 			}
+
+			return false;
 		}
 		/// <summary>
 		/// Disable any currently active custom weapon for the specified serial
@@ -107,11 +136,11 @@ namespace RedRightHand.CustomWeapons
 		public static void RegisterEvents()
 		{
 			if (eventHandler == null)
-				CustomHandlersManager.RegisterEventsHandler(new CustomRolesEventsManager());
+				CustomHandlersManager.RegisterEventsHandler(new CustomWeaponEventsManager());
 		}
 	}
 
-	public class CustomWeaponsEventsManager : CustomEventsHandler
+	public class CustomWeaponEventsManager : CustomEventsHandler
 	{
 		public override void OnServerWaitingForPlayers()
 		{
