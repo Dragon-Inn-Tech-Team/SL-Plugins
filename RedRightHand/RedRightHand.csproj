@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\ICustomCommand.cs" />
+    <Compile Include="Components\KillFeed.cs" />
     <Compile Include="CustomPlugin\CustomPluginConfig.cs" />
     <Compile Include="CustomSettings\CustomSettingsBase.cs" />
     <Compile Include="CustomSettings\CustomSettingsManager.cs" />
