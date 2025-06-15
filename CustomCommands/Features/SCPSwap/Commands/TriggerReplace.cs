@@ -27,7 +27,7 @@ namespace CustomCommands.Features.SCPSwap.Commands
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
-			if (Extensions.CanRun(sender, this, arguments, out response, out var _, out var _))
+			if (!Extensions.CanRun(sender, this, arguments, out response, out var _, out var _))
 				return false;
 
 			if(Round.Duration > TimeSpan.FromSeconds(SCPSwap.SwapSeconds))
