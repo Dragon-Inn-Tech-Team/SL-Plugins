@@ -11,6 +11,7 @@
     <TargetFrameworkProfile />
     <ProjectGuid>{FA233AC9-D585-42A2-A146-1AA257D1C356}</ProjectGuid>
 		<LangVersion>12</LangVersion>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <ItemGroup>
