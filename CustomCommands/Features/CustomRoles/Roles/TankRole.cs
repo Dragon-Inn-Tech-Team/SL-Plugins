@@ -43,7 +43,8 @@ namespace CustomCommands.Features.CustomRoles.Roles
 			player.AddAmmo(ItemType.Ammo556x45, 120);
 
 			player.GetStatModule<StaminaStat>().MaxValue = 0;
-			player.MaxHealth = 150;
+			player.MaxHealth = 170;
+			player.Health = player.MaxHealth;
 			player.SetSize(1.15f, 1.15f, 1.15f);
 			player.EnableEffect<Slowness>(5, 2000);
 
@@ -67,9 +68,6 @@ namespace CustomCommands.Features.CustomRoles.Roles
 		public void Awake()
 		{
 			Player.TryGet(this.gameObject, out var tankPlayer);
-			var collider = gameObject.AddComponent<BoxCollider>();
-			collider.size = new Vector3(1f, 1f, 1f);
-			collider.transform.position = tankPlayer.Camera.position;
 		}
 
 		public void Update()
@@ -86,7 +84,7 @@ namespace CustomCommands.Features.CustomRoles.Roles
 				{
 					if (Player.TryGet(hitColliders[i].gameObject, out var player) && player.UserId != tankPlayer.UserId && !player.IsSCP && !player.HasEffect<Invisible>())
 					{
-						player.RagdollPlayer(3, 0.5f, false);
+						player.RagdollPlayer((tankPlayer.Camera.forward * 2f), 3, false, "Knocked over");
 					}
 				}
 			}	

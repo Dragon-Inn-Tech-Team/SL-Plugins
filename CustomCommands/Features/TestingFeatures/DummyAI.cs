@@ -40,7 +40,7 @@ namespace CustomCommands.Features.TestingFeatures
 				//if (!_agent.isStopped)
 				//Logger.Info($"{_agent.destination} {_agent.remainingDistance}");
 
-				if (Physics.Raycast(_hub.PlayerCameraReference.position, _hub.transform.forward, out var hitInfo, 1f, InteractionCoordinator.InteractRaycastMask))
+				if (Physics.Raycast(_hub.PlayerCameraReference.position, _hub.transform.forward, out var hitInfo, 1f, InteractionCoordinator.RaycastMask))
 				{
 					Logger.Info($"AAA {hitInfo.collider.name}");
 					interact(hitInfo);

@@ -223,7 +223,6 @@ namespace DiscordLab
 			string prefix = "(RA)";
 			string player = "Console";
 
-
 			if (args.CommandType == CommandType.Console)
 			{
 				prefix = "(CONSOLE)";
@@ -246,7 +245,7 @@ namespace DiscordLab
 				}
 			}
 
-			BotLink.Instance.SendMessage($"{prefix} {player} ran: **{CommandToString(args)}**");
+			BotLink.Instance.SendMessage($"{prefix} {player} {(!args.ExecutedSuccessfully ? "tried to run" : "ran" )}: **{CommandToString(args)}**");
 		}
 
 		private string CommandToString(CommandExecutedEventArgs args)

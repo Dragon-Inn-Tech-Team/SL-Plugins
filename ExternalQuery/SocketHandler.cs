@@ -33,7 +33,7 @@ namespace ExternalQuery
 				{
 					var client = TcpListener.AcceptTcpClient();
 
-					Logger.Info($"Connection from {client.Client.RemoteEndPoint} opened");
+					Logger.Debug($"Connection from {client.Client.RemoteEndPoint} opened");
 
 					NetworkStream stream = client.GetStream();
 
@@ -49,7 +49,7 @@ namespace ExternalQuery
 
 						if (string.IsNullOrEmpty(data))
 						{
-							Logger.Info($"Remote query from {client.Client.RemoteEndPoint} rejected due to invalid request format");
+							Logger.Debug($"Remote query from {client.Client.RemoteEndPoint} rejected due to invalid request format");
 							send(stream, JsonConvert.SerializeObject(new JObject(new JProperty("response", "Invalid format"))));
 						}
 						else
@@ -60,12 +60,12 @@ namespace ExternalQuery
 
 								if (!obj.ContainsKey("password") || obj["password"].ToString() != ExternalQueryPlugin.Config.Password)
 								{
-									Logger.Info($"Remote query from {client.Client.RemoteEndPoint} rejected due to invalid password");
+									Logger.Debug($"Remote query from {client.Client.RemoteEndPoint} rejected due to invalid password");
 									send(stream, JsonConvert.SerializeObject(new JObject(new JProperty("response", "Invalid Query Password"))));
 								}
 								else if (!obj.ContainsKey("command"))
 								{
-									Logger.Info($"Remote query from {client.Client.RemoteEndPoint} rejected due to invalid request format");
+									Logger.Debug($"Remote query from {client.Client.RemoteEndPoint} rejected due to invalid request format");
 									send(stream, JsonConvert.SerializeObject(new JObject(new JProperty("response", "Invalid format"))));
 								}
 								else
@@ -124,11 +124,11 @@ namespace ExternalQuery
 							}
 							catch (Exception e)
 							{
-								Logger.Info($"Error executing remote command: {e}\nData: {data}");
+								Logger.Debug($"Error executing remote command: {e}\nData: {data}");
 							}
 						}
 
-						Logger.Info($"Connection from {client.Client.RemoteEndPoint} closed");
+						Logger.Debug($"Connection from {client.Client.RemoteEndPoint} closed");
 
 						stream.Close();
 						client.Close();
@@ -136,7 +136,7 @@ namespace ExternalQuery
 					}
 					catch (Exception e)
 					{
-						Logger.Info($"Error executing remote command: {e}");
+						Logger.Debug($"Error processing request from {client.Client.RemoteEndPoint}: {e}");
 						send(stream, JsonConvert.SerializeObject(new JObject(new JProperty("response", e))));
 
 						stream.Close();
