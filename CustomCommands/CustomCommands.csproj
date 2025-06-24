@@ -1,132 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6D3519BA-CFB9-4D54-AA04-C9027DFCFBD4}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomCommands</RootNamespace>
-    <AssemblyName>CustomCommands</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-		<LangVersion>12</LangVersion>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>12</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\Builds\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>5</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\Check\Ban.cs" />
-    <Compile Include="Commands\Check\CheckParent.cs" />
-    <Compile Include="Commands\Check\Mute.cs" />
-    <Compile Include="Commands\Misc\RMute.cs" />
-    <Compile Include="Commands\Player\Drop.cs" />
-    <Compile Include="Commands\Player\Explode.cs" />
-    <Compile Include="Commands\Player\Hint.cs" />
-    <Compile Include="Commands\Player\PlayerParent.cs" />
-    <Compile Include="Commands\Player\Pocket.cs" />
-    <Compile Include="Commands\Player\SendTo.cs" />
-    <Compile Include="Commands\Player\Tower2.cs" />
-    <Compile Include="Commands\Player\TeleportToCoords.cs" />
-    <Compile Include="Commands\Player\Trip.cs" />
-    <Compile Include="Commands\Renaming\MassRename.cs" />
-    <Compile Include="Commands\Renaming\MassUnname.cs" />
-    <Compile Include="Commands\Spawn\Ball.cs" />
-    <Compile Include="Commands\Spawn\Flashbang.cs" />
-    <Compile Include="Commands\Spawn\Grenade.cs" />
-    <Compile Include="Commands\Spawn\SpawnParent.cs" />
-    <Compile Include="Features\CustomRoles\Commands\CustomRoleCommand.cs" />
-    <Compile Include="Features\CustomRoles\CustomRolesManager.cs" />
-    <Compile Include="Features\CustomRoles\Roles\CustomRoleBase.cs" />
-    <Compile Include="Features\CustomRoles\Roles\MedicRole.cs" />
-    <Compile Include="Features\CustomRoles\Roles\TankRole.cs" />
-    <Compile Include="Features\EventRounds\Events\CustomEventRound.cs" />
-    <Compile Include="Core\CustomFeature.cs" />
-    <Compile Include="Features\Blackouts\Blackouts.cs" />
-    <Compile Include="Features\CustomSettings\CustomHumanSettings.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Capybara.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\CustomWeaponParent.cs" />
-    <Compile Include="Features\CustomWeapons\CustomWeaponsManager.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\CapybaraGun.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\BallLauncher.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\CustomWeaponBase.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\FlashLauncher.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\GrenadeLauncher.cs" />
-    <Compile Include="Features\CustomWeapons\Weapons\RagdollLauncher.cs" />
-    <Compile Include="Features\Disarming\BetterDisarming.cs" />
-    <Compile Include="Features\DMSRandomized\DMSEvents.cs" />
-    <Compile Include="Commands\Gaslighting\Gullible.cs" />
-    <Compile Include="Features\EventRounds\Events\HeavyHideAndSeek.cs" />
-    <Compile Include="Features\EventRounds\Events\HotPotato.cs" />
-    <Compile Include="Features\EventRounds\Events\OneInTheChamber.cs" />
-    <Compile Include="Features\EventRounds\Events\SnowballFight\SnowballCommand.cs" />
-    <Compile Include="Features\EventRounds\Events\SnowballFight\SnowballEvents.cs" />
-    <Compile Include="Features\EventRounds\Events\TDMInfection.cs" />
-    <Compile Include="Features\EventRounds\Events\SCPInfection.cs" />
-    <Compile Include="Features\RandomSize\RandomSize.cs" />
-    <Compile Include="Features\TestingFeatures\Commands\AI.cs" />
-    <Compile Include="Features\TestingFeatures\Commands\Fill.cs" />
-    <Compile Include="Features\TestingFeatures\Commands\GetDest.cs" />
-    <Compile Include="Features\TestingFeatures\DummyAI.cs" />
-    <Compile Include="Features\TestingFeatures\Navigation\NavigationEvents.cs" />
-    <Compile Include="Features\Holidays\Carpincho.cs" />
-    <Compile Include="Commands\Size\SizeCommand.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Commands\Size\SizeEvents.cs" />
-    <Compile Include="Commands\Size\SizeManager.cs" />
-    <Compile Include="Features\SCPSwap\CustomSCPSettings.cs" />
-    <Compile Include="Features\SCP3114Enable\SCP3114Overhaul.cs" />
-    <Compile Include="Features\DamageAnnouncements\DamageAnnouncements.cs" />
-    <Compile Include="Features\DoorLocking\Commands\Doors.cs" />
-    <Compile Include="Features\DoorLocking\DoorLocking.cs" />
-    <Compile Include="Features\SCPSwap\SCPSwap.cs" />
-    <Compile Include="Features\SurfaceLightingFix\SurfaceLightObject.cs" />
-    <Compile Include="Features\TestingFeatures\TestingDummies.cs" />
-    <Compile Include="CustomCommandsPlugin.cs" />
-    <Compile Include="Features\EventRounds\EventRounds.cs" />
-    <Compile Include="Features\LateJoin\LateJoin.cs" />
-    <Compile Include="Features\LateSpawn\LateSpawn.cs" />
-    <Compile Include="Features\SurfaceLightingFix\SurfaceLightingFix.cs" />
-    <Compile Include="Features\Voting\Commands\StartVote.cs" />
-    <Compile Include="Features\Voting\Votes.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Ball.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Flash.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Grenade.cs" />
-    <Compile Include="Features\CustomWeapons\Commands\Ragdoll.cs" />
-    <Compile Include="Features\Misc\PocketRagdollHandler.cs" />
-    <Compile Include="Features\SCP079Removal\SCP079Removal.cs" />
-    <Compile Include="Features\SCPSwap\Commands\List.cs" />
-    <Compile Include="Features\SCPSwap\Commands\TriggerReplace.cs" />
-    <Compile Include="Features\Voting\Commands\No.cs" />
-    <Compile Include="Features\Voting\Commands\Yes.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RedRightHand\RedRightHand.csproj">
-      <Project>{47ebcba8-07aa-44d5-988d-b67cdccb3fd0}</Project>
-      <Name>RedRightHand</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\RedRightHand\RedRightHand.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\EventRounds\Commands\" />
@@ -142,5 +26,7 @@
       <HintPath>..\References\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="11.0.1" />
+  </ItemGroup>
 </Project>
