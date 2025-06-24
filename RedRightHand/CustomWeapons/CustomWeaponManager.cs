@@ -1,4 +1,6 @@
-﻿using InventorySystem.Items.Pickups;
+﻿using InventorySystem;
+using InventorySystem.Items.Firearms.Modules;
+using InventorySystem.Items.Pickups;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.CustomHandlers;
 using LabApi.Features.Console;
@@ -43,18 +45,16 @@ namespace RedRightHand.CustomWeapons
 			}
 		}
 
-		public static bool SpawnCustomWeapon(string type, Vector3 spawnLocation, out ItemPickupBase customWeapon)
+		public static bool SpawnCustomWeapon(string type, Vector3 spawnLocation, out ItemPickupBase customWeaponPickup)
 		{
-			//Logger.Info($"{Helpers.SpawnItem(AvailableWeapons[type].Model, spawnLocation, out customWeapon)}");
-
-			if (AvailableWeapons.ContainsKey(type) && Helpers.SpawnItem(AvailableWeapons[type].Model, spawnLocation, out customWeapon))
+			if (AvailableWeapons.ContainsKey(type) && Helpers.SpawnItem(AvailableWeapons[type].Model, spawnLocation, out customWeaponPickup))
 			{
-				EnableWeapon(customWeapon.Info.Serial, type);
+				EnableWeapon(customWeaponPickup.Info.Serial, type);
 				return true;
 			}
 			else
 			{
-				customWeapon = null;
+				customWeaponPickup = null;
 				return false;
 			}
 		}
@@ -163,6 +163,12 @@ namespace RedRightHand.CustomWeapons
 		{
 			if(ev.Player.CurrentItem.Serial.GetCustomWeapon(out var weaponBase))
 				weaponBase.PlaceBulletHole(ev);
+		}
+
+		public override void OnPlayerReloadingWeapon(PlayerReloadingWeaponEventArgs ev)
+		{
+			if (ev.Player.CurrentItem.Serial.GetCustomWeapon(out var weaponBase))
+				weaponBase.Reloading(ev);
 		}
 	}
 }

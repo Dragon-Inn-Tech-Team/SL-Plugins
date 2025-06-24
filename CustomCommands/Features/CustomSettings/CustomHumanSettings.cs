@@ -17,8 +17,8 @@ namespace CustomCommands.Features.CustomSettings
 		public override ServerSpecificSettingBase[] SettingBases => new ServerSpecificSettingBase[]
 		{
 			new SSGroupHeader(Name, false, Description),
-			new SSKeybindSetting((int)SettingsIDs.Human_HealOther, "Heal Player", KeyCode.K, true, "Heals the player you are currently looking at (Requires a medkit)"),
-			new SSKeybindSetting((int)SettingsIDs.Human_Suicide, "Suicide", KeyCode.KeypadEquals, true, "Kill yourself and become a spectator"),
+			new SSKeybindSetting((int)SettingsIDs.Human_HealOther, "Heal Player", KeyCode.K, true, false, "Heals the player you are currently looking at (Requires a medkit)"),
+			new SSKeybindSetting((int)SettingsIDs.Human_Suicide, "Suicide", KeyCode.KeypadEquals, true, false, "Kill yourself and become a spectator"),
 		};
 
 		public override void Activate()

@@ -15,10 +15,12 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 	{
 		public override string Name => "Grenade Launcher";
 		public override ItemType Model => ItemType.GunCom45;
+		public override int MaxMagazineAmmo => 1;
 
 		public override void ShootWeapon(PlayerShootingWeaponEventArgs ev)
 		{
 			Helpers.SpawnGrenade<TimeGrenade>(ev.Player, ItemType.GrenadeHE, Helpers.RandomThrowableVelocity(ev.Player.Camera.transform));
+			ev.IsAllowed = false;
 		}
 	}
 }

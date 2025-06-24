@@ -1,6 +1,8 @@
-﻿using LabApi.Events.Arguments.PlayerEvents;
+﻿using InventorySystem.Items.Firearms.Modules;
+using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Features.Wrappers;
 using RedRightHand;
+using System.Linq;
 
 namespace RedRightHand.CustomWeapons
 {
@@ -9,6 +11,7 @@ namespace RedRightHand.CustomWeapons
 		public uint Serial { get; private set; }
 		public abstract string Name { get; }
 		public abstract ItemType Model { get; }
+		public abstract int MaxMagazineAmmo { get; }
 
 		public virtual void EnableWeapon(uint serial)
 		{
@@ -25,5 +28,10 @@ namespace RedRightHand.CustomWeapons
 		public virtual void HitPlayer(PlayerHurtingEventArgs ev) { }
 
 		public virtual void PlaceBulletHole(PlayerPlacedBulletHoleEventArgs ev) { }
+
+		public void Reloading(PlayerReloadingWeaponEventArgs ev)
+		{
+
+		}
 	}
 }

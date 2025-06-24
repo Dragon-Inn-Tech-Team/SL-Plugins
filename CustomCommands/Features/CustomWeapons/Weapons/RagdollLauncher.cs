@@ -24,7 +24,8 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 	public class RagdollLauncher : CustomWeaponBase
 	{
 		public override string Name => "Ragdoll Launcher";
-		public override ItemType Model => ItemType.GunCom45;
+		public override ItemType Model => ItemType.GunFRMG0;
+		public override int MaxMagazineAmmo => 1;
 
 		static RoleTypeId[] ragdolls = new RoleTypeId[]
 		{
@@ -58,6 +59,8 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 			BasicRagdoll basicRagdoll = UnityEngine.Object.Instantiate(pRB.Ragdoll);
 			basicRagdoll.NetworkInfo = data;
 			NetworkServer.Spawn(basicRagdoll.gameObject, (NetworkConnection)null);
+
+			ev.IsAllowed = false;
 		}
 	}
 }

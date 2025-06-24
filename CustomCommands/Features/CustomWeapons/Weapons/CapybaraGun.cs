@@ -19,6 +19,7 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 	{
 		public override string Name => "CapybaraGun";
 		public override ItemType Model => ItemType.GunCom45;
+		public override int MaxMagazineAmmo => 1;
 
 		public override void PlaceBulletHole(PlayerPlacedBulletHoleEventArgs ev)
 		{

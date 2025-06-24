@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Discord;
+using LabApi.Features.Console;
+using LabApi.Features.Wrappers;
+using MEC;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
+using System.Data;
+using System.Linq;
 using System.Net;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using MEC;
-using System.Data;
 using Extensions = RedRightHand.Extensions;
-using LabApi.Features.Wrappers;
-using LabApi.Features.Console;
 
 namespace DiscordLab
 {
@@ -123,6 +124,9 @@ namespace DiscordLab
 					int dataLength = Socket.Receive(data);
 
 					string incomingData = Encoding.UTF8.GetString(data, 0, dataLength);
+
+					//Logger.Info(incomingData);
+
 					List<string> messages = new(incomingData.Split('\n'));
 
 					foreach (string message in messages)
@@ -255,23 +259,66 @@ namespace DiscordLab
 
 				GetPlayer(searchvariable, out Player player);
 
+				//foreach (var a in jObject)
+				//{
+				//	Logger.Info($"{a.Key} | {a.Value}");
+				//}
+
 				duration = Extensions.GetBanDuration(chars[0], amount);
 				arg = arg.Skip(1).ToArray();
 				reason = string.Join(" ", arg);
 
 				if (player != null)
 				{
-					Server.BanPlayer(player, reason, DateTime.UtcNow.Add(duration).Ticks);
 					player.Disconnect($"You have been banned by the server staff\nReason: " + reason);
+
+					BanHandler.IssueBan(new BanDetails
+					{
+						Id = player.UserId,
+						IssuanceTime = TimeBehaviour.CurrentTimestamp(),
+						Expires = DateTime.UtcNow.Add(duration).Ticks,
+						Issuer = jObject["StaffID"].ToString(),
+						OriginalName = player.Nickname,
+						Reason = reason
+					}, BanHandler.BanType.UserId);
+
+					BanHandler.IssueBan(new BanDetails
+					{
+						Id = player.IpAddress,
+						IssuanceTime = TimeBehaviour.CurrentTimestamp(),
+						Expires = DateTime.UtcNow.Add(duration).Ticks,
+						Issuer = jObject["StaffID"].ToString(),
+						OriginalName = player.Nickname,
+						Reason = reason
+					}, BanHandler.BanType.IP);
+
+					//Server.BanPlayer(player, reason, DateTime.UtcNow.Add(duration).Ticks);
+
 
 					return $"`{player.Nickname} ({player.UserId})` was banned for {durationString} with reason: {reason}";
 				}
 				else
 				{
 					if (searchvariable.Contains('@'))
-						Server.BanUserId(searchvariable, reason, DateTime.UtcNow.Add(duration).Ticks);
+						BanHandler.IssueBan(new BanDetails
+						{
+							Id = searchvariable,
+							IssuanceTime = TimeBehaviour.CurrentTimestamp(),
+							Expires = DateTime.UtcNow.Add(duration).Ticks,
+							Issuer = jObject["StaffID"].ToString(),
+							OriginalName = "Offline Player",
+							Reason = reason
+						}, BanHandler.BanType.UserId);
 					else
-						Server.BanIpAddress(searchvariable, reason, DateTime.UtcNow.Add(duration).Ticks);
+						BanHandler.IssueBan(new BanDetails
+						{
+							Id = searchvariable,
+							IssuanceTime = TimeBehaviour.CurrentTimestamp(),
+							Expires = DateTime.UtcNow.Add(duration).Ticks,
+							Issuer = jObject["StaffID"].ToString(),
+							OriginalName = "Offline Player",
+							Reason = reason
+						}, BanHandler.BanType.IP);
 
 					return $"`{searchvariable}` was banned for {durationString} with reason: {reason}!";
 				}

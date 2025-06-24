@@ -14,11 +14,16 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 	public class BallLauncher : CustomWeaponBase
 	{
 		public override string Name => "SCP-018 Launcher";
-		public override ItemType Model => ItemType.GunCom45;
+		public override ItemType Model => ItemType.GunFRMG0;
+
+		public override int MaxMagazineAmmo => 3;
 
 		public override void ShootWeapon(PlayerShootingWeaponEventArgs ev)
 		{
 			Helpers.SpawnGrenade<InventorySystem.Items.ThrowableProjectiles.Scp018Projectile>(ev.Player, ItemType.SCP018, Helpers.RandomThrowableVelocity(ev.Player.Camera.transform));
+			ev.IsAllowed = false;
 		}
+
+		
 	}
 }

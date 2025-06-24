@@ -23,7 +23,7 @@ namespace CustomCommands.Features.SCPSwap
 			//Basic header for this section of the settings list. This will be used to give a quick description of what all the settings below are used for.
 			new SSGroupHeader(Name, false, Description),
 			//Custom keybind option. Default bind set to O (not Zero), blocks input while GUIs are open, and adds a simple descriptive hint for the option.
-			new SSKeybindSetting((int) SettingsIDs.SCP_SwapFromHuman, "Swap to SCP", KeyCode.L, false /*<- Spectators have a GUI*/, "Replaces an SCP if an SCP slot is available."), 
+			new SSKeybindSetting((int) SettingsIDs.SCP_SwapFromHuman, "Swap to SCP", KeyCode.L, false /*<- Spectators have a GUI*/, true, "Replaces an SCP if an SCP slot is available."), 
 			//Custom setting with 2 toggle buttons. The 2nd option (Referred to as B in all code) is set as the default option for users. Also has a simple descriptive hint for the option.
 			//new SSTwoButtonsSetting((int) SettingsIDs.SCP_NeverSCP, "Auto swap from SCP", "Enabled", "Disabled", true, "Always get swapped to a human role if you spawn as an SCP (And are not on cooldown from doing so)")
 		};
