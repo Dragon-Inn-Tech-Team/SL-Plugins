@@ -1,11 +1,6 @@
 ﻿using InventorySystem;
 using InventorySystem.Items;
-using PluginAPI.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LabApi.Features.Wrappers;
 using Utils;
 
 namespace CustomCommands
@@ -19,9 +14,9 @@ namespace CustomCommands
             {
                 if (!isTails)
                 {
-                    ItemBase item = player.CurrentItem;
-                    player.ReferenceHub.inventory.ServerRemoveItem(item.ItemSerial, null);
-                    ExplosionUtils.ServerExplode(player.ReferenceHub);
+                    Item item = player.CurrentItem;
+                    player.ReferenceHub.inventory.ServerRemoveItem(item.Base.ItemSerial, null);
+                    ExplosionUtils.ServerExplode(player.ReferenceHub, ExplosionType.PinkCandy);
                 }
             });
         }
