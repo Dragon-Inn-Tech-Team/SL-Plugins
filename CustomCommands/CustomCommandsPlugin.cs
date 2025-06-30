@@ -73,11 +73,13 @@ namespace CustomCommands
 				new Features.SCP3114Enable.SCP3114Overhaul(Config.EnableSCP3114),
 				new Features.SCPSwap.SCPSwap(Config.EnableScpSwap),
 				new Features.Voting.Votes(Config.EnablePlayerVoting),
-				new Features.RandomSize.RandomSize(Config.EnableRandomSizes),	
+				new Features.RandomSize.RandomSize(Config.EnableRandomSizes),
+				new Features.HelpfulCapybara.HelpfulCapybara(Config.EnableHelpfulCapybara),
 #if DEBUG		
 				new Features.Blackouts.Blackouts(Config.EnableBlackout),
 				new Features.TestingFeatures.TestingDummies(Config.EnableDummies),
 				new Features.Testing.Navigation.NavigationEvents(Config.EnableDummies),
+				
 #endif
 			];
 

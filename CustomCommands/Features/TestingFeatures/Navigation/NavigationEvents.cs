@@ -43,10 +43,10 @@ namespace CustomCommands.Features.Testing.Navigation
 				meshSurface.voxelSize = 0.08f;
 				meshSurface.BuildNavMesh();
 
-				foreach (Transform a in root.transform)
-				{
-					Logger.Info(a.gameObject.name);
-				}
+				//foreach (Transform a in root.transform)
+				//{
+				//	Logger.Info(a.gameObject.name);
+				//}
 			}
 
 

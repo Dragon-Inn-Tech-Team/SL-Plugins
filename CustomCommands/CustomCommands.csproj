@@ -10,10 +10,14 @@
     <WarningLevel>5</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Features\EventRounds\Commands\**" />
+    <EmbeddedResource Remove="Features\EventRounds\Commands\**" />
+    <None Remove="Features\EventRounds\Commands\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\RedRightHand\RedRightHand.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Features\EventRounds\Commands\" />
     <Folder Include="Features\WeeklyEvents\" />
   </ItemGroup>
   <ItemGroup>

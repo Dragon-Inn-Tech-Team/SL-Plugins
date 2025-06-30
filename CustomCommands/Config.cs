@@ -60,5 +60,7 @@ namespace CustomCommands
 		public bool EnableSCP3114 { get; set; } = true; // Enables SCP 3114 and it's balancing features
 
 		public bool EnableRandomSizes { get; set; } = true;
+
+		public bool EnableHelpfulCapybara { get; set; } = false;
 	}
 }
