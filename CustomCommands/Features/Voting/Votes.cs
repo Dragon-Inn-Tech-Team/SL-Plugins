@@ -68,6 +68,7 @@ namespace CustomCommands.Features.Voting
 					nil++;
 			}
 
+			PlayerVotes.Clear();
 			Server.SendBroadcast($"The vote is over!\n<color=green>{yes} voted yes</color>, <color=red>{no} voted no</color>, and {nil} did not vote", 10);
 			SetVote(VoteType.NONE, string.Empty);
 		}
