@@ -10,7 +10,7 @@ namespace CustomCommands.Features.CustomWeapons
 	{
 		public enum CustomWeaponType
 		{
-			NONE, Grenade, Flashbang, Ball, Ragdoll, Capybara
+			NONE, Grenade, Flashbang, Ball, Ragdoll, Capybara, Confetti
 		}
 
 
@@ -34,6 +34,7 @@ namespace CustomCommands.Features.CustomWeapons
 					{ CustomWeaponType.Ball, new BallLauncher() },
 					{ CustomWeaponType.Ragdoll, new RagdollLauncher() },
 					{ CustomWeaponType.Capybara, new CapybaraGun() },
+					{ CustomWeaponType.Confetti, new ConfettiLauncher() },
 				};
 			}
 		}
