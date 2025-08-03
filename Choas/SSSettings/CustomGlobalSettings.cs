@@ -35,7 +35,7 @@ namespace Choas.SSSettings
 			//Basic header for this section of the settings list. This will be used to give a quick description of what all the settings below are used for.
 			new SSGroupHeader(Name, false, Description),
 			//Custom keybind option. Default bind set to O (not Zero), blocks input while GUIs are open, and adds a simple descriptive hint for the option.
-			new SSKeybindSetting((int) CustomSettingsManager.SettingsIDs.SpecialButton, "Special button", KeyCode.E, false, "Special button that does something depending on your class."),
+			new SSKeybindSetting((int) CustomSettingsManager.SettingsIDs.SpecialButton, "Special button", KeyCode.E, true,true, "Special button that does something depending on your class."),
         };
 
         /// <summary>
