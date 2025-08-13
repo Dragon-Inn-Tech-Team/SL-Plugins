@@ -5,13 +5,26 @@
     <LangVersion>12</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>../Builds/</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>../Builds/</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomCommands\CustomCommands.csproj" />
     <ProjectReference Include="..\RedRightHand\RedRightHand.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\References\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NVorbis" Version="0.10.5" />
   </ItemGroup>
 </Project>
