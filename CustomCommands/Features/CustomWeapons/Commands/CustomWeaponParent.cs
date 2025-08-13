@@ -23,6 +23,7 @@ namespace CustomCommands.Features.CustomWeapons.Commands
 			RegisterCommand(new Flash());
 			RegisterCommand(new Grenade());
 			RegisterCommand(new Ragdoll());
+			RegisterCommand(new Confetti());
 		}
 
 		public static CustomWeaponParent Create()

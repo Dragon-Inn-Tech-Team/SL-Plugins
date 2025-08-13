@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mirror;
+using UnityEngine;
 using static CustomCommands.Features.CustomWeapons.CustomWeaponsManager;
 
 namespace CustomCommands.Features.CustomWeapons.Weapons
@@ -49,5 +51,16 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 		public virtual void HitPlayer(PlayerHurtingEventArgs ev) { }
 
 		public virtual void PlaceBulletHole(PlayerPlacedBulletHoleEventArgs ev) { }
+
+		/// <summary>
+		/// Component for cleaning up custom projectiles more easily
+		/// </summary>
+		public class SelfDestructProjectile : MonoBehaviour
+		{
+			public void DelayedDestroy(float delay)
+			{
+				MEC.Timing.CallDelayed(delay, () => { NetworkServer.Destroy(gameObject); });
+			}
+		}
 	}
 }
