@@ -5,6 +5,12 @@
     <LangVersion>12</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>../Builds/</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>../Builds/</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomCommands\CustomCommands.csproj" />
     <ProjectReference Include="..\RedRightHand\RedRightHand.csproj" />
