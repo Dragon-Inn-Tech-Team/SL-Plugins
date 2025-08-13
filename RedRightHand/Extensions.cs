@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using LabApi.Features.Console;
 using LabApi.Features.Permissions;
+using LabApi.Features.Permissions.Providers;
 using LabApi.Features.Wrappers;
 using Newtonsoft.Json.Linq;
 using PlayerRoles;
@@ -50,7 +51,7 @@ namespace RedRightHand
 				Response = $"You do not have the required permission to execute this command: {cmd.Permission}";
 				return false;
 			}
-			else if (!string.IsNullOrEmpty(cmd.PermissionString) && CheckPermission(sender, cmd.PermissionString))
+			else if (!string.IsNullOrEmpty(cmd.PermissionString) && !CheckPermission(sender, cmd.PermissionString))
 			{
 				Response = $"You do not have the required permission to execute this command: {cmd.PermissionString}";
 				return false;
@@ -67,21 +68,35 @@ namespace RedRightHand
 				if (cmd.Usage.Contains("%player%"))
 				{
 					var index = cmd.Usage.IndexOf("%player%");
+					string text = args.ElementAt(index);
 
-					var hubs = RAUtils.ProcessPlayerIdOrNamesList(args, index, out _, false);
-
-					if (hubs.Count < 1)
+					if(text.Equals("*") || text.Equals("all"))
 					{
-						Response = $"No player(s) found for: {args.ElementAt(index)}";
-						return false;
+						foreach(var plr in Player.GetAll())
+						{
+							Players.Add(plr);
+						}
 					}
 					else
 					{
-						foreach (var plr in hubs)
+						var hubs = RAUtils.ProcessPlayerIdOrNamesList(args, index, out _, false);
+
+						if (hubs.Count < 1)
 						{
-							Players.Add(Player.Get(plr));
+							Response = $"No player(s) found for: {args.ElementAt(index)}";
+							return false;
+						}
+						else
+						{
+							foreach (var plr in hubs)
+							{
+								Players.Add(Player.Get(plr));
+							}
 						}
 					}
+
+
+					
 				}
 			}
 
