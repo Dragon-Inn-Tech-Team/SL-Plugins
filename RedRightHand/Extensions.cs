@@ -1,4 +1,7 @@
 ﻿using CommandSystem;
+using InventorySystem;
+using InventorySystem.Items.Firearms;
+using InventorySystem.Items.MicroHID;
 using LabApi.Features.Console;
 using LabApi.Features.Permissions;
 using LabApi.Features.Permissions.Providers;
@@ -70,9 +73,9 @@ namespace RedRightHand
 					var index = cmd.Usage.IndexOf("%player%");
 					string text = args.ElementAt(index);
 
-					if(text.Equals("*") || text.Equals("all"))
+					if (text.Equals("*") || text.Equals("all"))
 					{
-						foreach(var plr in Player.GetAll())
+						foreach (var plr in Player.GetAll())
 						{
 							Players.Add(plr);
 						}
@@ -96,7 +99,7 @@ namespace RedRightHand
 					}
 
 
-					
+
 				}
 			}
 
@@ -295,7 +298,7 @@ namespace RedRightHand
 			{
 				var ffdStore = Attacker.GetDataStore<FFDStore>();
 
-				if(ffdStore.PreviousRole == RoleTypeId.None)
+				if (ffdStore.PreviousRole == RoleTypeId.None)
 					return false;
 
 				if (IsChaos(victim, true) && IsChaos(ffdStore.PreviousRole, true))
@@ -402,6 +405,62 @@ namespace RedRightHand
 			}
 
 			return false;
+		}
+
+		public static List<Player> GetNearbyPlayers(Player player, bool rangeOnly = false)
+		{
+			float distanceCheck = player.Position.y > 900 ? 70 : 35;
+			List<Player> nearbyPlayers = [];
+
+			foreach (var plr in Player.List)
+			{
+				if (plr.IsHost || plr.Role == RoleTypeId.Spectator)
+					continue;
+
+				var distance = Vector3.Distance(player.Position, plr.Position);
+
+				if (rangeOnly && distance <= distanceCheck)
+					nearbyPlayers.Add(plr);
+				else
+				{
+					var angle = Vector3.Angle(player.GameObject.transform.forward, player.Position - plr.Position);
+
+					if ((distance <= distanceCheck && angle > 130) || distance < 5)
+						nearbyPlayers.Add(plr);
+				}
+			}
+
+			return nearbyPlayers;
+		}
+
+		/// <summary>
+		/// Mostly used for Nina's AI stuffs. Checks stats, class and inventory to give players a threat level. Higher is more of a threat, lower is less of a threat.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static int GetPlayerThreatLevel(Player player)
+		{
+			int level = 1;
+
+			//Checks if the player is MTF or chaos (not including dclass or scientists) and adds 10 threat if they are.
+			if (player.IsMtf() || player.IsChaos())
+				level += 10;
+
+			//Checks what item the player is currently holding. Any special weapon will add 10 threat, normal weapons, grenades and SCP items add 5 threat, and medical items add 3.
+			if (Item.TryGet(player.CurrentItem.Serial, out var item))
+			{
+				if (item.Category == ItemCategory.SpecialWeapon)
+					level += 10;
+				else if (item.Category == ItemCategory.Firearm || item.Category == ItemCategory.SCPItem || item.Category == ItemCategory.Grenade)
+					level += 5;
+				else if (item.Category == ItemCategory.Medical)
+					level += 3;
+			}
+
+			//Multiplies their threat level based on their current HP
+			level *= (int)Math.Round(Mathf.Clamp(player.Health / player.MaxHealth, 0.2f, 1.25f), 0);
+
+			return level;
 		}
 	}
 

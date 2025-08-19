@@ -19,16 +19,16 @@ namespace CustomCommands.Features.Testing.Navigation
 
 		public override void OnServerMapGenerated(MapGeneratedEventArgs ev)
 		{
-			//foreach (var door in Map.Doors)
-			//{
-			//	if (door.Permissions == DoorPermissionFlags.None)
-			//	{
-			//		var nmo = door.GameObject.AddComponent<NavMeshObstacle>();
-			//		nmo.carving = false;
-			//	}
-			//}
+			foreach (var door in Map.Doors)
+			{
+				if (door.Permissions == DoorPermissionFlags.None)
+				{
+					var nmo = door.GameObject.AddComponent<NavMeshObstacle>();
+					nmo.carving = false;
+				}
+			}
 
-			//foreach(var a in SceneManager.GetActiveScene().GetRootGameObjects())
+			//foreach (var a in SceneManager.GetActiveScene().GetRootGameObjects())
 			//{
 			//	Logger.Info(a.gameObject.name);
 			//}

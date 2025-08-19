@@ -1,4 +1,5 @@
 ﻿using DynamicTags.Systems;
+using HarmonyLib;
 using LabApi.Events.CustomHandlers;
 using LabApi.Features.Console;
 using RedRightHand.CustomPlugin;
@@ -20,7 +21,7 @@ namespace DynamicTags
 
 		public Reporting Reporting { get; set; }
 		public StaffTracker StaffTracker { get; set; }
-		public CommandTracking CommandTracking { get; set; }
+		public AltChecker AltTracking { get; set; }
 
 		public override void LoadConfigs()
 		{
@@ -50,6 +51,9 @@ namespace DynamicTags
 		{
 			Logger.Info($"Plugin is loading...");
 
+			Harmony harmony = new Harmony("DT-Patching-Phegg");
+			harmony.PatchAll();
+
 			//Registers the events used in the DynamicTags class
 			if (Config.TagsEnabled)
 			{
@@ -64,8 +68,7 @@ namespace DynamicTags
 
 			Reporting = new Reporting();
 			CustomHandlersManager.RegisterEventsHandler(Reporting);
-			CommandTracking = new CommandTracking();
-			CustomHandlersManager.RegisterEventsHandler(CommandTracking);
+
 			Logger.Info($"Plugin is loaded. API Endpoint is: {Config.ApiUrl}");
 		}
 	}

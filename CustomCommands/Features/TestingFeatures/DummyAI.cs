@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using UnityEngine.AI;
 using UnityEngine;
 using Logger = LabApi.Features.Console.Logger;
+using LabApi.Features.Wrappers;
+using RedRightHand;
 
 namespace CustomCommands.Features.TestingFeatures
 {
@@ -18,6 +20,8 @@ namespace CustomCommands.Features.TestingFeatures
 		private ReferenceHub _hub;
 		private NavMeshAgent _agent;
 		private float _speed;
+		private float _lastPlrCheck = 0;
+		private KeyValuePair<Player, int> _highestThreatPlayer = new();
 
 		public void Init(ReferenceHub hub, NavMeshAgent agent, float speed = 30f)
 		{
@@ -42,17 +46,38 @@ namespace CustomCommands.Features.TestingFeatures
 
 				if (Physics.Raycast(_hub.PlayerCameraReference.position, _hub.transform.forward, out var hitInfo, 1f, InteractionCoordinator.RaycastMask))
 				{
-					Logger.Info($"AAA {hitInfo.collider.name}");
 					interact(hitInfo);
 				}
 
 				IFpcRole fpcRole = _hub.roleManager.CurrentRole as IFpcRole;
 				if (fpcRole != null)
 				{
+					if (_lastPlrCheck > 50)
+					{
+						
+
+						_lastPlrCheck = 0;
+
+						Logger.Info("Checking Threat");
+						var players = RedRightHand.Extensions.GetNearbyPlayers(Player.Get(_hub), true);
+
+						foreach (var p in players)
+						{
+							Logger.Info($"{p.Nickname}");
+							CheckThreat(p);
+						}
+
+
+
+						SetDestination(_highestThreatPlayer.Key.Position);
+					}
+					_lastPlrCheck++;
+					
+
 					FirstPersonMovementModule fpcModule = fpcRole.FpcModule;
 					Vector3 pos = _hub.transform.position;
 					var dist = _agent.remainingDistance;
-					if(dist < _agent.stoppingDistance)
+					if (dist < _agent.stoppingDistance)
 						_agent.ResetPath();
 
 					if (dist > 1 && dist < 300)
@@ -101,6 +126,19 @@ namespace CustomCommands.Features.TestingFeatures
 			_agent.ResetPath();
 			_agent.SetDestination(target);
 			Logger.Debug($"New Destination: {_agent.destination} {_agent.remainingDistance} {_agent.pathStatus} {_agent.path.status} {_agent.isOnNavMesh}");
+		}
+
+		public void CheckThreat(Player player)
+		{
+			var threat = RedRightHand.Extensions.GetPlayerThreatLevel(player);
+
+			Logger.Info($"Threat: CUR {_highestThreatPlayer.Value} CHECK {threat}");
+
+			if (threat > _highestThreatPlayer.Value)
+			{
+				Logger.Info($"New Threat: {player.Nickname}");
+				_highestThreatPlayer = new KeyValuePair<Player, int>(player, threat);
+			}
 		}
 	}
 }
