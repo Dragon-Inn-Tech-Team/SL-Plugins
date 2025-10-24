@@ -28,7 +28,7 @@ namespace CustomCommands.Features.SCP079Removal
 
 		public override void OnPlayerSpawned(PlayerSpawnedEventArgs ev)
 		{
-			Logger.Info($"{ev.Player.Role} {ev.Player.Role == RoleTypeId.Scp079} | {SCPCount} {SCPCount > 3}");
+			//Logger.Info($"{ev.Player.Role} {ev.Player.Role == RoleTypeId.Scp079} | {SCPCount} {SCPCount > 3}");
 
 			if (ev.Player.Role == RoleTypeId.Scp079 && SCPCount > 3)
 			{
@@ -46,7 +46,7 @@ namespace CustomCommands.Features.SCP079Removal
 		[HarmonyPrefix]
 		public static void prefix(int targetScpNumber)
 		{
-			Logger.Info($"SCP Target number set to {targetScpNumber}");
+			//Logger.Info($"SCP Target number set to {targetScpNumber}");
 			SCP079Removal.SCPCount = targetScpNumber;
 		}
 	}

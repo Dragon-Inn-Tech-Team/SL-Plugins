@@ -15,6 +15,9 @@ namespace TutorialPlus
 		[Description("Should tutorials be able to freeze SCP-173 and become an observer")]
 		public bool TutorialObserve173 { get; set; } = false;
 
+		[Description("Should tutorials be able to trigger Tesla Gates")]
+		public bool TutorialTriggerTesla { get; set; } = false;
+
 		[Description("Should tutorials be able to be handcuffed")]
 		public bool CuffableTutorial { get; set; } = false;
 
@@ -27,5 +30,7 @@ namespace TutorialPlus
 
 		[Description("Enables debug messages in the server console")]
 		public bool Debug { get; set; } = false;
+
+
 	}
 }

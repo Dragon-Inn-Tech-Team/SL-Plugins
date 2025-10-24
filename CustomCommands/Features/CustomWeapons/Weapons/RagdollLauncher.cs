@@ -47,7 +47,7 @@ namespace CustomCommands.Features.CustomWeapons.Weapons
 			typeof(StandardDamageHandler).GetField("StartVelocity", BindingFlags.NonPublic | BindingFlags.Instance)
 				.SetValue(dh, velocity);
 
-			RagdollData data = new RagdollData(null, dh, role, player.Position, player.GameObject.transform.rotation, player.Nickname, NetworkTime.time);
+			RagdollData data = new RagdollData(null, dh, role, new RelativePositioning.RelativePosition(player.Position), player.GameObject.transform.rotation, player.Nickname, NetworkTime.time);
 			BasicRagdoll basicRagdoll = UnityEngine.Object.Instantiate(pRB.Ragdoll);
 			basicRagdoll.NetworkInfo = data;
 			NetworkServer.Spawn(basicRagdoll.gameObject, (NetworkConnection)null);

@@ -74,7 +74,7 @@ namespace RedRightHand
 
 			typeof(StandardDamageHandler).GetField("StartVelocity", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue(dh, velocity);
 
-			return SpawnRagdoll(new RagdollData(null, dh, role, position, rotation, nickname, NetworkTime.time));
+			return SpawnRagdoll(new RagdollData(null, dh, role, new RelativePositioning.RelativePosition(position), rotation, nickname, NetworkTime.time));
 		}
 
 		public static void RagdollPlayer(this Player plr, float time = 3, float forceMultiplyer = 1, bool teleportOnEnd = true, string ragdollText = "guh")

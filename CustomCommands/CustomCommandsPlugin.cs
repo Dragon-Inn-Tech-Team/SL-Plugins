@@ -63,7 +63,7 @@ namespace CustomCommands
 				new Features.SCP079Removal.SCP079Removal(Config.EnableScp079Removal),
 				new Features.Disarming.BetterDisarming(Config.EnableBetterDisarming),
 				new Features.LateJoin.LateJoin(Config.EnableLateJoin && (Config.LateJoinTime > 0)),
-				new Features.LateSpawn.LateSpawn(Config.EnableLateSpawn && (Config.LateSpawnTime > 0)),
+				new Features.Respawning.LateSpawn(Config.EnableLateSpawn && (Config.LateSpawnTime > 0)),
 				new Features.SurfaceLightingFix.SurfaceLightingFix(Config.EnableAdditionalSurfaceLighting),
 				new Features.DamageAnnouncements.DamageAnnouncements(Config.EnableDamageAnnouncements),
 				new Features.SCP3114Enable.SCP3114Overhaul(Config.EnableSCP3114),

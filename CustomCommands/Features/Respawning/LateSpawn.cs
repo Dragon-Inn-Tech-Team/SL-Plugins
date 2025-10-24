@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomCommands.Features.LateSpawn
+namespace CustomCommands.Features.Respawning
 {
 	public class LateSpawn : CustomFeature
 	{

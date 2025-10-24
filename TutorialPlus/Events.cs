@@ -12,6 +12,8 @@ using RedRightHand;
 using LabApi.Events.Arguments.Scp173Events;
 using LabApi.Events.Arguments.PlayerEvents;
 using GameCore;
+using LabApi.Features.Permissions;
+using PlayerRoles.Spectating;
 
 namespace TutorialPlus
 {
@@ -59,6 +61,10 @@ namespace TutorialPlus
 						TutorialPlusPlugin.DebugLog($"Plugin enabled noclip for {ev.Player.Nickname}");
 					FpcNoclip.PermitPlayer(ev.Player.ReferenceHub);
 				}
+
+				if (ev.Player.HasPermissions("tutplus.autohide")){
+					SpectatableVisibilityManager.SetHidden(ev.Player.ReferenceHub, true);
+				}
 			}
 			else if (ev.OldRole == RoleTypeId.Tutorial)
 			{
@@ -82,6 +88,11 @@ namespace TutorialPlus
 						TutorialPlusPlugin.DebugLog($"Plugin disabled noclip for {ev.Player.Nickname}");
 					FpcNoclip.UnpermitPlayer(ev.Player.ReferenceHub);
 				}
+
+				if (ev.Player.HasPermissions("tutplus.autohide"))
+				{
+					SpectatableVisibilityManager.SetHidden(ev.Player.ReferenceHub, false);
+				}
 			}
 		}
 
@@ -90,6 +101,24 @@ namespace TutorialPlus
 			if (!TutorialPlusPlugin.Config.CuffableTutorial && ev.Target.Role == RoleTypeId.Tutorial)
 			{
 				TutorialPlusPlugin.DebugLog($"Plugin blocked player {ev.Target.Nickname} from being disarmed by {ev.Player.Nickname}");
+				ev.IsAllowed = false;
+			}
+		}
+
+        public override void OnPlayerIdlingTesla(PlayerIdlingTeslaEventArgs ev)
+        {
+			if (!TutorialPlusPlugin.Config.TutorialTriggerTesla && ev.Player.Role == RoleTypeId.Tutorial)
+			{
+				TutorialPlusPlugin.DebugLog($"Plugin blocked player {ev.Player.Nickname} from idling tesla gate in {ev.Tesla.Room} ({ev.Tesla.Position})");
+				ev.IsAllowed = false;
+			}
+		}
+
+        public override void OnPlayerTriggeringTesla(PlayerTriggeringTeslaEventArgs ev)
+        {
+			if (!TutorialPlusPlugin.Config.TutorialTriggerTesla && ev.Player.Role == RoleTypeId.Tutorial)
+			{
+				TutorialPlusPlugin.DebugLog($"Plugin blocked player {ev.Player.Nickname} from triggering tesla gate in {ev.Tesla.Room} ({ev.Tesla.Position})");
 				ev.IsAllowed = false;
 			}
 		}
