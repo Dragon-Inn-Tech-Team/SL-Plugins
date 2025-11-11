@@ -17,7 +17,7 @@ namespace CustomCommands.Features.DoorLocking
 
 		public DoorLocking(bool configSetting) : base(configSetting)
 		{
-			Logger.Info("MEOW??");
+			//Logger.Info("MEOW??");
 		}
 
 		public enum LockType

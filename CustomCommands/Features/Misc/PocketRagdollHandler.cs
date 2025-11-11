@@ -39,7 +39,7 @@ namespace CustomCommands.Features.Ragdoll
 						pos -= door.transform.forward * 0.25f;
 					pos += door.transform.up * 0.25f;
 
-					basicRagdoll.NetworkInfo = new RagdollData(obj.Info.OwnerHub, obj.Info.Handler, obj.Info.RoleType, pos, obj.Info.StartRotation, obj.Info.Nickname, obj.Info.CreationTime);
+					basicRagdoll.NetworkInfo = new RagdollData(obj.Info.OwnerHub, obj.Info.Handler, obj.Info.RoleType, new RelativePositioning.RelativePosition(pos), obj.Info.StartRelativeRotation, obj.Info.Nickname, obj.Info.CreationTime);
 					basicRagdoll.gameObject.AddComponent<FakeRagdoll>();
 					NetworkServer.Spawn(basicRagdoll.gameObject, (NetworkConnection)null);
 					NetworkServer.Destroy(obj.gameObject);
