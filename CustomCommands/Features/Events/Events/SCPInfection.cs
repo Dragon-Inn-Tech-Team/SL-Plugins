@@ -14,9 +14,6 @@ namespace CustomCommands.Features.EventRounds.Events
 {
 	public class SCPInfection : CustomEventRound
 	{
-		MEC.CoroutineHandle FlickerRoutine;
-		MEC.CoroutineHandle EndRoundRoutine;
-
 		public override void OnServerRoundStarted()
 		{
 			RoundTimeLimit = new TimeSpan(0, 6, 0);
@@ -59,14 +56,6 @@ namespace CustomCommands.Features.EventRounds.Events
 				}
 				remainingPlayers--;
 			}
-
-			FlickerRoutine = Timing.CallPeriodically(60 * 8f, 30f, () =>
-			{
-				foreach (var a in Room.Get(FacilityZone.HeavyContainment))
-				{
-					a.LightController.FlickerLights(5f);
-				}
-			});
 		}
 		public override void OnPlayerDying(PlayerDyingEventArgs ev)
 		{
@@ -100,10 +89,11 @@ namespace CustomCommands.Features.EventRounds.Events
 			player.SetRole(PlayerRoles.RoleTypeId.Scp0492, PlayerRoles.RoleChangeReason.Revived, PlayerRoles.RoleSpawnFlags.AssignInventory);
 			player.Position = Room.Get(RoomName.Hcz939).First().Position + Vector3.up;
 			player.Health = 75;
+			player.MaxHealth = 75;
 			player.EnableEffect<MovementBoost>(25, 60 * 8);
 		}
 
-		public override bool EventEndCondition()
+		public override bool CheckEndConditions()
 		{
 			return !Player.GetAll().Any(p => p.IsHuman);
 		}

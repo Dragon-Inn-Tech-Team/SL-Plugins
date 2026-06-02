@@ -1,8 +1,10 @@
 ﻿using Achievements.Handlers;
 using CustomCommands.Features.EventRounds;
+using InventorySystem.Items.Scp1509;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Features.Wrappers;
 using PlayerRoles;
+using PlayerRoles.PlayableScps.Scp1507;
 using PlayerRoles.PlayableScps.Scp3114;
 using PlayerRoles.PlayableScps.Scp939;
 using PlayerStatsSystem;
@@ -42,6 +44,8 @@ namespace CustomCommands.Features.Custom.Event
 				return "distrupted";
 			else if (dhb is JailbirdDamageHandler)
 				return "bonked";
+			else if (dhb is Scp1509DamageHandler)
+				return "stabbed";
 			else return "killed";
 		}
 
@@ -77,7 +81,8 @@ namespace CustomCommands.Features.Custom.Event
 		{
 			string killfeedString = "";
 			foreach(KillfeedEntry entry in KillfeedEntries)
-				killfeedString += $"<size=-14><align=left><pos=-8em>{entry.EntryMessage}</align></pos></size>\n";
+				if ((Round.Duration - entry.EntryTime).TotalSeconds < 30)
+					killfeedString += $"<size=-14><align=left><pos=-8em>{entry.EntryMessage}</align></pos></size>\n";
 
 			Server.ClearBroadcasts();
 			Server.SendBroadcast(killfeedString, 5);

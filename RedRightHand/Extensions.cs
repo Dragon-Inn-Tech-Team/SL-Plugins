@@ -7,8 +7,11 @@ using LabApi.Features.Console;
 using LabApi.Features.Permissions;
 using LabApi.Features.Permissions.Providers;
 using LabApi.Features.Wrappers;
+using MapGeneration;
 using Newtonsoft.Json.Linq;
 using PlayerRoles;
+using PlayerRoles.FirstPersonControl;
+using PlayerRoles.PlayableScps.Scp106;
 using PlayerRoles.PlayableScps.Scp3114;
 using PlayerRoles.PlayableScps.Scp939;
 using PlayerStatsSystem;
@@ -406,6 +409,19 @@ namespace RedRightHand
 			}
 
 			return false;
+		}
+
+		public static Vector3 GetSafeSpawn(this Player player, FacilityZone facilityZone = FacilityZone.HeavyContainment)
+		{
+			IFpcRole role = player.ReferenceHub.roleManager.CurrentRole as IFpcRole;
+
+			if (role == null)
+				return Vector3.zero;
+
+			var posesForZone = Scp106PocketExitFinder.GetPosesForZone(FacilityZone.HeavyContainment);
+			var randomPose = Scp106PocketExitFinder.GetRandomPose(posesForZone);
+			var raycastRange = Scp106PocketExitFinder.GetRaycastRange(FacilityZone.HeavyContainment);
+			return SafeLocationFinder.GetSafePositionForPose(randomPose, raycastRange, role.FpcModule.CharController, true);
 		}
 
 		public static List<Player> GetNearbyPlayers(this Player player, bool rangeOnly = false)

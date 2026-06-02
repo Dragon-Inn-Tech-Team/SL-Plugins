@@ -21,7 +21,7 @@ namespace CustomCommands.Features.Custom.Event
 
 		public virtual bool EndEvent(bool force = false)
 		{
-			if (force || EventEndCondition() || Round.Duration > RoundTimeLimit)
+			if (force || CheckEndConditions() || Round.Duration > RoundTimeLimit)
 			{
 				Logger.Info($"Event round ended");
 
@@ -31,7 +31,7 @@ namespace CustomCommands.Features.Custom.Event
 			return false;
 		}
 
-		public virtual bool EventEndCondition()
+		public virtual bool CheckEndConditions()
 		{
 			return true;
 		}
@@ -70,7 +70,7 @@ namespace CustomCommands.Features.Custom.Event
 
 		public override void OnPlayerPickingUpItem(PlayerPickingUpItemEventArgs ev)
 		{
-			if (ev.Pickup.Category == ItemCategory.Firearm || ev.Pickup.Category == ItemCategory.Grenade || ev.Pickup.Category == ItemCategory.SCPItem || ev.Pickup.Category == ItemCategory.SpecialWeapon || ev.Pickup.Category == ItemCategory.Keycard)
+			if (ev.Pickup.Category == ItemCategory.Firearm || ev.Pickup.Category == ItemCategory.Grenade || ev.Pickup.Category == ItemCategory.SCPItem || ev.Pickup.Category == ItemCategory.SpecialWeapon || ev.Pickup.Category == ItemCategory.Keycard || ev.Pickup.Category == ItemCategory.Medical)
 			{
 				ev.Player.Damage(10, "Cease");
 				ev.IsAllowed = false;
@@ -80,6 +80,15 @@ namespace CustomCommands.Features.Custom.Event
 		public override void OnServerRoundEndingConditionsCheck(RoundEndingConditionsCheckEventArgs ev)
 		{
 			ev.CanEnd = EndEvent();
+		}
+
+		public override void OnPlayerUsingItem(PlayerUsingItemEventArgs ev)
+		{
+			if(ev.UsableItem.Category == ItemCategory.Medical)
+			{
+				ev.IsAllowed = false;
+			}
+
 		}
 	}
 }

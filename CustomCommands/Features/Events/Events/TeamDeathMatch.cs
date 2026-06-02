@@ -120,7 +120,7 @@ namespace CustomCommands.Features.EventRounds.Events
 			});
 		}
 
-		public override bool EventEndCondition()
+		public override bool CheckEndConditions()
 		{
 			return ChaosKills > 74 || NTFKills > 74;
 		}
