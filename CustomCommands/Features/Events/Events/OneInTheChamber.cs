@@ -26,10 +26,11 @@ namespace CustomCommands.Features.EventRounds.Events
 				plr.EnableEffect<MovementBoost>(30, 20);
 				plr.ClearInventory();
 				plr.AddItem(ItemType.SCP1509);
-				var gun = plr.AddItem(ItemType.GunCOM18);
+				var gun = plr.AddItem(ItemType.GunRevolver);
 				if (gun is FirearmItem firearm)
 				{
 					firearm.StoredAmmo = 1;
+					firearm.AttachmentsCode = 0;
 				}
 			}
 		}
@@ -51,9 +52,17 @@ namespace CustomCommands.Features.EventRounds.Events
 		{
 			if (Round.Duration.TotalSeconds < 20)
 				ev.IsAllowed = false;
-			else if(ev.DamageHandler is FirearmDamageHandler fDH && fDH.Firearm.ItemTypeId == ItemType.GunCOM18)
+			else if(ev.DamageHandler is FirearmDamageHandler fDH && fDH.Firearm.ItemTypeId == ItemType.GunRevolver)
 			{
 				fDH.Damage = 250f;
+			}
+		}
+
+		public override void OnPlayerChangedItem(PlayerChangedItemEventArgs ev)
+		{
+			if (ev.NewItem is FirearmItem firearm && firearm.Type == ItemType.GunRevolver && ev.Player.Ammo[ItemType.Ammo44cal] > 0)
+			{
+				firearm.Reload();
 			}
 		}
 
@@ -64,7 +73,14 @@ namespace CustomCommands.Features.EventRounds.Events
 				if (Round.Duration.TotalSeconds > 20)
 				{
 					ev.Player.ClearInventory();
-					ev.Attacker.AddAmmo(ItemType.Ammo9x19, 1);
+					
+					if(ev.Attacker.CurrentItem is FirearmItem fi)
+					{
+						ev.Attacker.AddAmmo(ItemType.Ammo44cal, 1);
+						fi.Reload();
+					}
+					else if (ev.Attacker.Ammo[ItemType.Ammo44cal] == 0)
+						ev.Attacker.AddAmmo(ItemType.Ammo44cal, 1);
 				}
 				else
 					ev.IsAllowed = false;
@@ -76,6 +92,26 @@ namespace CustomCommands.Features.EventRounds.Events
 		public override bool CheckEndConditions() => Player.GetAll().Count(p => p.Role == RoleTypeId.ClassD) < 2;
 
 		public override void OnPlayerScp1509Resurrecting(PlayerScp1509ResurrectingEventArgs ev)
+		{
+			ev.IsAllowed = false;
+		}
+
+		public override void OnPlayerUnloadingWeapon(PlayerUnloadingWeaponEventArgs ev)
+		{
+			ev.IsAllowed = false;
+		}
+
+		public override void OnPlayerReloadingWeapon(PlayerReloadingWeaponEventArgs ev)
+		{
+			ev.IsAllowed = false;
+		}
+
+		public override void OnPlayerSearchingAmmo(PlayerSearchingAmmoEventArgs ev)
+		{
+			ev.IsAllowed = false;
+		}
+
+		public override void OnPlayerPickingUpAmmo(PlayerPickingUpAmmoEventArgs ev)
 		{
 			ev.IsAllowed = false;
 		}
