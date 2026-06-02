@@ -1,14 +1,9 @@
 ﻿using CommandSystem;
-using InventorySystem.Items.ThrowableProjectiles;
-using LabApi.Features.Wrappers;
-using PlayerRoles;
-using RedRightHand.Commands;
 using RedRightHand;
+using RedRightHand.Commands;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utils.NonAllocLINQ;
 
 namespace CustomCommands.Commands.Renaming
 {
@@ -49,7 +44,7 @@ namespace CustomCommands.Commands.Renaming
 					return true;
 				}
 
-                if (!sender.CanRun(this, arguments, out response, out var _, out _))
+				if (!sender.CanRun(this, arguments, out response, out var _, out _))
 					return false;
 
 				var players = LabApi.Features.Wrappers.Player.List.ToList();

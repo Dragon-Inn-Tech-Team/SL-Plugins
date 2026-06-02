@@ -1,6 +1,5 @@
 ﻿using CommandSystem;
 using InventorySystem.Items.ThrowableProjectiles;
-using LabApi.Features.Wrappers;
 using RedRightHand;
 using RedRightHand.Commands;
 using System;

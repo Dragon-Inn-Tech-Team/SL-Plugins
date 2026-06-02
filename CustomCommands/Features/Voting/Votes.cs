@@ -1,16 +1,14 @@
 ﻿
 
 using CustomCommands.Core;
-using Discord;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.Arguments.ServerEvents;
 using LabApi.Features.Wrappers;
-using LabApi.Loader.Features.Plugins.Enums;
 using System.Collections.Generic;
 
 namespace CustomCommands.Features.Voting
 {
-	public class Votes : CustomFeature
+	public class Votes : CustomFeatureBase
 	{
 		public Votes(bool configSetting) : base(configSetting)
 		{

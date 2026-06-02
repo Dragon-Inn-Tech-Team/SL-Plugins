@@ -1,14 +1,7 @@
 ﻿using CommandSystem;
-using Discord;
-using LabApi.Features.Wrappers;
 using RedRightHand;
 using RedRightHand.Commands;
-using RemoteAdmin;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomCommands.Features.Voting.Commands
 {
@@ -32,7 +25,7 @@ namespace CustomCommands.Features.Voting.Commands
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
-			if(!sender.CanRun(this, arguments, out response, out _, out _))
+			if (!sender.CanRun(this, arguments, out response, out _, out _))
 				return false;
 
 			if (Votes.VoteInProgress)

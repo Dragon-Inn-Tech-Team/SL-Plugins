@@ -1,18 +1,15 @@
 ﻿using CustomPlayerEffects;
-using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
+using InventorySystem.Items.Firearms;
+using InventorySystem.Items.Firearms.Attachments;
+using InventorySystem.Items.ThrowableProjectiles;
 using LabApi.Features.Wrappers;
 using Mirror;
+using PlayerRoles;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.Ragdolls;
-using PlayerRoles;
 using PlayerStatsSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -55,16 +52,7 @@ namespace RedRightHand
 			grenade.ServerActivate();
 		}
 
-		public static BasicRagdoll SpawnRagdoll(RagdollData ragdollData)
-		{
-			PlayerRoleLoader.TryGetRoleTemplate(ragdollData.RoleType, out FpcStandardRoleBase ragdollRole);
-
-			BasicRagdoll basicRagdoll = UnityEngine.Object.Instantiate<BasicRagdoll>(ragdollRole.Ragdoll);
-			basicRagdoll.NetworkInfo = ragdollData;
-			basicRagdoll.gameObject.AddComponent<FakeRagdoll>();
-			NetworkServer.Spawn(basicRagdoll.gameObject, (NetworkConnection)null);
-			return basicRagdoll;
-		}
+		public static BasicRagdoll SpawnRagdoll(Player player, string deathReason) => SpawnRagdoll(player.Nickname, player.Role, player.Position, player.Rotation, player.Velocity, deathReason);
 
 		public static BasicRagdoll SpawnRagdoll(string nickname, RoleTypeId role, Vector3 position, Quaternion rotation, Vector3 velocity, string deathReason)
 		{
@@ -77,12 +65,23 @@ namespace RedRightHand
 			return SpawnRagdoll(new RagdollData(null, dh, role, new RelativePositioning.RelativePosition(position), rotation, nickname, NetworkTime.time));
 		}
 
+		public static BasicRagdoll SpawnRagdoll(RagdollData ragdollData)
+		{
+			PlayerRoleLoader.TryGetRoleTemplate(ragdollData.RoleType, out FpcStandardRoleBase ragdollRole);
+
+			BasicRagdoll basicRagdoll = UnityEngine.Object.Instantiate<BasicRagdoll>(ragdollRole.Ragdoll);
+			basicRagdoll.NetworkInfo = ragdollData;
+			basicRagdoll.gameObject.AddComponent<FakeRagdoll>();
+			NetworkServer.Spawn(basicRagdoll.gameObject, (NetworkConnection)null);
+			return basicRagdoll;
+		}
+
 		public static void RagdollPlayer(this Player plr, float time = 3, float forceMultiplyer = 1, bool teleportOnEnd = true, string ragdollText = "guh")
 		{
 			if (!plr.IsAlive)
 				return;
 			Vector3 velocity = plr.Velocity;
-			velocity += plr.Camera.transform.forward * UnityEngine.Random.Range(1, 1.5f) * forceMultiplyer;
+			velocity += -plr.Camera.transform.forward * UnityEngine.Random.Range(1, 1.5f) * forceMultiplyer;
 
 			velocity += plr.Camera.transform.up * UnityEngine.Random.Range(0.75f, 1.25f) * forceMultiplyer;
 			var basicRagdoll = SpawnRagdoll(plr.Nickname, plr.Role, plr.Position, plr.Camera.rotation, velocity, ragdollText);

@@ -1,13 +1,9 @@
 ﻿using CommandSystem;
-using CommandSystem.Commands.RemoteAdmin.Cleanup;
 using Mirror;
 using PlayerRoles.FirstPersonControl;
 using RemoteAdmin;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CustomCommands.Commands.Spawn

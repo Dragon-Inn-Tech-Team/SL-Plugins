@@ -1,6 +1,4 @@
-﻿using LabApi.Features.Wrappers;
-
-namespace CustomCommands.Features.Players.Size
+﻿namespace CustomCommands.Features.Players.Size
 {
 	public class SizeEvents
 	{

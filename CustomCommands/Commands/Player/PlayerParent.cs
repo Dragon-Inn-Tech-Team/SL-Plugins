@@ -1,9 +1,7 @@
 ﻿using CommandSystem;
+using CustomCommands.Features.DoorLocking.Commands;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomCommands.Commands.Player
 {
@@ -26,6 +24,7 @@ namespace CustomCommands.Commands.Player
 			RegisterCommand(new TeleportToCoords());
 			RegisterCommand(new Tower2());
 			RegisterCommand(new Trip());
+			RegisterCommand(new Doors());
 		}
 
 		protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

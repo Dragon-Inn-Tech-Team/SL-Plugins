@@ -10,11 +10,12 @@
     <WarningLevel>5</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RedRightHand\RedRightHand.csproj" />
+    <Compile Remove="Features\WeeklyEvents\**" />
+    <EmbeddedResource Remove="Features\WeeklyEvents\**" />
+    <None Remove="Features\WeeklyEvents\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Features\EventRounds\Commands\" />
-    <Folder Include="Features\WeeklyEvents\" />
+    <ProjectReference Include="..\RedRightHand\RedRightHand.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">

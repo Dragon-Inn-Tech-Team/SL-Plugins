@@ -1,9 +1,6 @@
 ﻿using CommandSystem;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VoiceChat;
 
 namespace CustomCommands.Commands.Check
@@ -16,7 +13,7 @@ namespace CustomCommands.Commands.Check
 
 		public string Description => "Checks if a specific UserID is muted";
 
-		public string[] Usage { get; } = [ "UserID" ];
+		public string[] Usage { get; } = ["UserID"];
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{

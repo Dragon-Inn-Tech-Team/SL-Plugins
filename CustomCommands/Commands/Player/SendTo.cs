@@ -1,17 +1,14 @@
 ﻿using CommandSystem;
-using InventorySystem.Items.ThrowableProjectiles;
-using LabApi.Features.Wrappers;
 using RedRightHand;
 using RedRightHand.Commands;
 using System;
 using System.Linq;
-using UnityEngine;
 using Utils;
 
 namespace CustomCommands.Commands.Player
 {
 	[CommandHandler(typeof(PlayerParent))]
-	public class SendTo: ICustomCommand
+	public class SendTo : ICustomCommand
 	{
 		public string Command => "sendtoplayer";
 

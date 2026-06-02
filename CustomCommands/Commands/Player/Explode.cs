@@ -1,11 +1,7 @@
 ﻿using CommandSystem;
-using InventorySystem.Items.ThrowableProjectiles;
-using LabApi.Features.Wrappers;
 using RedRightHand;
 using RedRightHand.Commands;
 using System;
-using System.Linq;
-using UnityEngine;
 using Utils;
 
 namespace CustomCommands.Commands.Player

@@ -1,14 +1,12 @@
-﻿using HarmonyLib;
-using PlayerRoles.Ragdolls;
+﻿using CustomCommands.Core;
+using CustomCommands.Features.CustomSettings;
+using HarmonyLib;
+using LabApi.Features.Console;
+using RedRightHand.CustomPlugin;
 using RedRightHand.CustomSettings;
+using System;
 using System.Linq;
 using UserSettings.ServerSpecific;
-using RedRightHand.CustomPlugin;
-using System;
-using CustomCommands.Features;
-using CustomCommands.Core;
-using LabApi.Features.Console;
-using CustomCommands.Features.CustomSettings;
 
 namespace CustomCommands
 {
@@ -43,7 +41,7 @@ namespace CustomCommands
 
 		public override Version Version => new(2, 0, 0);
 
-		public CustomFeature[] features;
+		public CustomFeatureBase[] features;
 
 		public override void LoadConfigs()
 		{
@@ -57,6 +55,8 @@ namespace CustomCommands
 			Harmony harmony = new Harmony("CC-Patching-Phegg");
 			harmony.PatchAll();
 
+			Logger.Info("Enabling features");
+
 			features =
 			[
 				new Features.DoorLocking.DoorLocking(Config.EnableDoorLocking),
@@ -66,25 +66,25 @@ namespace CustomCommands
 				new Features.Respawning.LateSpawn(Config.EnableLateSpawn && (Config.LateSpawnTime > 0)),
 				new Features.SurfaceLightingFix.SurfaceLightingFix(Config.EnableAdditionalSurfaceLighting),
 				new Features.DamageAnnouncements.DamageAnnouncements(Config.EnableDamageAnnouncements),
-				new Features.SCP3114Enable.SCP3114Overhaul(Config.EnableSCP3114),
+				new Features.SCP3114Enable.SCP3114Overhaul(Config.EnableScp3114),
 				new Features.SCPSwap.SCPSwap(Config.EnableScpSwap),
 				new Features.Voting.Votes(Config.EnablePlayerVoting),
 				new Features.RandomSize.RandomSize(Config.EnableRandomSizes),
-				new Features.CustomWeapons.CustomWeaponsManager(Config.EnableSpecialWeapons),
-				new Features.CustomRoles.CustomRolesManager(Config.EnableCustomRoles),
-#if DEBUG		
+				new Features.Custom.Weapons.CustomWeaponsManager(Config.EnableSpecialWeapons),
+				new Features.Custom.Roles.CustomRolesManager(Config.EnableCustomRoles),
+				new Features.EventRounds.EventManager(Config.EnableEvents),
 				new Features.Blackouts.Blackouts(Config.EnableBlackout),
 				new Features.TestingFeatures.TestingDummies(Config.EnableDummies),
-				new Features.Testing.Navigation.NavigationEvents(Config.EnableDummies),
-#endif
+				new Features.Testing.Navigation.NavigationManager(Config.EnableDummies),
 			];
+
 
 			if (ServerSpecificSettingsSync.DefinedSettings == null)
 				ServerSpecificSettingsSync.DefinedSettings = [];
 
 			var settings = new CustomSettingsBase[]
 			{
-				new Features.SCPSwap.CustomSCPSettings(),
+				//new Features.SCPSwap.CustomSCPSettings(),
 				new CustomHumanSettings(),
 			};
 
@@ -96,9 +96,9 @@ namespace CustomCommands
 
 		public override void Disable()
 		{
-			foreach(var a in features)
+			foreach (var a in features)
 			{
-				if (a.isEnabled)
+				if (a.IsEnabled)
 					a.OnDisabled();
 			}
 		}

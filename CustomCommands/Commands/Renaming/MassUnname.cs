@@ -1,14 +1,8 @@
 ﻿using CommandSystem;
-using InventorySystem.Items.ThrowableProjectiles;
-using LabApi.Features.Wrappers;
-using PlayerRoles;
 using RedRightHand;
 using RedRightHand.Commands;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Utils.NonAllocLINQ;
 
 namespace CustomCommands.Commands.Renaming
 {

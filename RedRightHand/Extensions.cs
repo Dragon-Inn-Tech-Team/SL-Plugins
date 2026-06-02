@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using InventorySystem;
 using InventorySystem.Items.Firearms;
+using InventorySystem.Items.Firearms.Attachments;
 using InventorySystem.Items.MicroHID;
 using LabApi.Features.Console;
 using LabApi.Features.Permissions;
@@ -407,7 +408,7 @@ namespace RedRightHand
 			return false;
 		}
 
-		public static List<Player> GetNearbyPlayers(Player player, bool rangeOnly = false)
+		public static List<Player> GetNearbyPlayers(this Player player, bool rangeOnly = false)
 		{
 			float distanceCheck = player.Position.y > 900 ? 70 : 35;
 			List<Player> nearbyPlayers = [];
@@ -438,7 +439,7 @@ namespace RedRightHand
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public static int GetPlayerThreatLevel(Player player)
+		public static int GetPlayerThreatLevel(this Player player)
 		{
 			int level = 1;
 
@@ -461,6 +462,18 @@ namespace RedRightHand
 			level *= (int)Math.Round(Mathf.Clamp(player.Health / player.MaxHealth, 0.2f, 1.25f), 0);
 
 			return level;
+		}
+
+		public static FirearmItem AddFirearmWithAttachments(this Player player, ItemType itemType, params AttachmentName[] attachments)
+		{
+			var item = player.AddItem(itemType);
+			if (item is FirearmItem firearmItem)
+			{
+				firearmItem.AttachmentsCode = firearmItem.ValidateAttachmentsCode(firearmItem.GetCodeFromAttachmentNamesRaw(attachments));
+				return firearmItem;
+			}
+
+			return null;
 		}
 	}
 
