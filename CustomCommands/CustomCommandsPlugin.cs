@@ -1,5 +1,5 @@
 ﻿using CustomCommands.Core;
-using CustomCommands.Features.CustomSettings;
+using CustomCommands.Features.Settings;
 using HarmonyLib;
 using LabApi.Features.Console;
 using RedRightHand.CustomPlugin;
@@ -70,9 +70,9 @@ namespace CustomCommands
 				new Features.SCPSwap.SCPSwap(Config.EnableScpSwap),
 				new Features.Voting.Votes(Config.EnablePlayerVoting),
 				new Features.RandomSize.RandomSize(Config.EnableRandomSizes),
-				new Features.Custom.Weapons.CustomWeaponsManager(Config.EnableSpecialWeapons),
+				new Features.Weapons.CustomWeaponsManager(Config.EnableSpecialWeapons),
 				new Features.Custom.Roles.CustomRolesManager(Config.EnableCustomRoles),
-				new Features.EventRounds.EventManager(Config.EnableEvents),
+				new Features.CustomEvents.EventManager(Config.EnableEvents),
 				new Features.Blackouts.Blackouts(Config.EnableBlackout),
 				new Features.TestingFeatures.TestingDummies(Config.EnableDummies),
 				new Features.Testing.Navigation.NavigationManager(Config.EnableDummies),
